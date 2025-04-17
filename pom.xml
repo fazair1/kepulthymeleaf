@@ -40,6 +40,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+		<!--         https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
 		<!--        web jar-->
 		<dependency>
 			<groupId>org.webjars</groupId>

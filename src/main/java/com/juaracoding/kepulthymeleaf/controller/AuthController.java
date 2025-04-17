@@ -7,6 +7,7 @@ import com.juaracoding.kepulthymeleaf.security.BcryptImpl;
 import com.juaracoding.kepulthymeleaf.utils.ConstantPage;
 import com.juaracoding.kepulthymeleaf.utils.ConstantValue;
 import com.juaracoding.kepulthymeleaf.utils.GlobalFunction;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,6 +112,12 @@ public class AuthController {
 //        model.addAttribute("MENU_NAVBAR",menuNavBar);
 
         return ConstantPage.HOME_PAGE;
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "redirect:"+ConstantPage.DEFAULT_PAGE;
     }
 
 }
