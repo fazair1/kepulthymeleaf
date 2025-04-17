@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>
+		<version>3.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.juaracoding</groupId>
@@ -28,8 +28,77 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<bootstrap.version>4.6.2</bootstrap.version>
+		<webjars-locator.version>0.52</webjars-locator.version>
+		<jquery.version>3.7.1</jquery.version>
+		<popper.version>2.11.7</popper.version>
+		<h2.version>2.3.232</h2.version>
+		<model-mapper.version>3.2.2</model-mapper.version>
+
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+		<!--        web jar-->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>${jquery.version}</version>
+		</dependency>
+
+		<dependency><!--PENAMBAHAN 06-03-2023        -->
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>${bootstrap.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator</artifactId>
+			<version>${webjars-locator.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.webjars/popper.js -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>popper.js</artifactId>
+			<version>${popper.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-jdbc</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
+		<dependency>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
+			<version>0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15to18</artifactId>
+			<version>1.79</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/cn.apiclub.tool/simplecaptcha -->
+		<dependency>
+			<groupId>cn.apiclub.tool</groupId>
+			<artifactId>simplecaptcha</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
