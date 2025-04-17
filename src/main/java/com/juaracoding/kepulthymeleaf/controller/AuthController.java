@@ -64,11 +64,15 @@ public class AuthController {
             // kalau mode production
             isValid = BcryptImpl.verifyHash(valLoginDTO.getCaptcha(),strAnswer);
         }
+        if(!isValid){
+            model.addAttribute("captchaMessage","Invalid Captcha");
+            GlobalFunction.getCaptchaLogin(valLoginDTO);
+            model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
+            return ConstantPage.LOGIN_PAGE;
+        }
+
         if (result.hasErrors()) {
             GlobalFunction.getCaptchaLogin(valLoginDTO);
-            if(!isValid){
-                model.addAttribute("captchaMessage","Invalid Captcha");
-            }
             model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
             return ConstantPage.LOGIN_PAGE;
         }
@@ -80,6 +84,7 @@ public class AuthController {
 
         try{
             response = authService.login(valLoginDTO);
+            System.out.println(response);
             Map<String,Object> map = (Map<String, Object>) response.getBody();
             Map<String,Object> data = (Map<String, Object>) map.get("data");
 //            List<Map<String,Object>> ltMenu = (List<Map<String, Object>>) data.get("menu");
@@ -89,6 +94,11 @@ public class AuthController {
 //            System.out.println("Token JWT : "+tokenJwt);
 
         }catch (Exception e){
+            GlobalFunction.getCaptchaLogin(valLoginDTO);
+            model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
+            result.rejectValue("username", "error.user", "Username / Password Salah");
+            result.rejectValue("password", "error.user", "Username / Password Salah");
+            return ConstantPage.LOGIN_PAGE;
 
         }
 //        webRequest.setAttribute("MENU_NAVBAR",menuNavBar,1);

@@ -26,8 +26,9 @@
             <div>
                 <ul class="error-ul">
                     <li th:each="err : ${#fields.errors('username')}" th:text="${err}" class="error" />
+                    <li id="errorUsername" class="error" />
                 </ul>
-                <p id="errorUsername" class="error"/>
+<!--                <p id="errorUsername" class="error"/>-->
             </div>
 
             <div class="form-field d-flex align-items-center">
@@ -37,8 +38,8 @@
             <div>
                 <ul class="error-ul">
                     <li th:each="err : ${#fields.errors('password')}" th:text="${err}" class="error" />
+                    <li id="errorPwd" class="error" />
                 </ul>
-                <p id="errorPwd" class="error"/>
             </div>
             <div class="row">
                 <div class="col-4">
