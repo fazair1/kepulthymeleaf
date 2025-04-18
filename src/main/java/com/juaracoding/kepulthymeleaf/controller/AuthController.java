@@ -2,6 +2,8 @@ package com.juaracoding.kepulthymeleaf.controller;
 
 import com.juaracoding.kepulthymeleaf.config.OtherConfig;
 import com.juaracoding.kepulthymeleaf.dto.validation.ValLoginDTO;
+import com.juaracoding.kepulthymeleaf.dto.validation.ValRegisDTO;
+import com.juaracoding.kepulthymeleaf.dto.validation.ValVerifyOTPRegisDTO;
 import com.juaracoding.kepulthymeleaf.httpservice.AuthService;
 import com.juaracoding.kepulthymeleaf.security.BcryptImpl;
 import com.juaracoding.kepulthymeleaf.utils.ConstantPage;
@@ -38,19 +40,7 @@ public class AuthController {
             Model model,
             WebRequest webRequest) {
 
-//        try{
-//            Long sesId = Long.parseLong(Crypto.performDecrypt(valLoginDTO.getSesId()));
-//            Long selisih = (System.currentTimeMillis()-sesId)/1000;
-//            if(selisih<180){
-//                throw new Exception("Anda Terkepung !!");
-//            }
-//        }catch (Exception e){
-//
-//        }
-
         String decodePassword = new String(Base64.decode(valLoginDTO.getPassword()));
-//        GlobalFunction.matchingPattern(valLoginDTO.getUsername(),"^[[a-z0-9\\\\.]]{8,16}$","username","Isi Username dengan benar!!",result);
-//        GlobalFunction.matchingPattern(valLoginDTO.getCaptcha(),"^[\\w]{5}$","captcha","Isi Captcha dengan benar!!",result);
 
         GlobalFunction.matchingPattern(decodePassword,"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
                 "password","Isi Password dengan benar!!","usr",result);
@@ -112,6 +102,74 @@ public class AuthController {
 //        model.addAttribute("MENU_NAVBAR",menuNavBar);
 
         return ConstantPage.HOME_PAGE;
+    }
+
+    @GetMapping("/regis")
+    public String regisPage(Model model) {
+
+        ValRegisDTO valRegisDTO = new ValRegisDTO();
+        model.addAttribute("usr", valRegisDTO);
+        model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
+
+        return ConstantPage.REGISTER_PAGE;
+    }
+
+    @PostMapping("/regis")
+    public String regis(
+            @ModelAttribute("usr") @Valid ValRegisDTO valRegisDTO,
+            BindingResult result,
+            Model model,
+            WebRequest webRequest) {
+
+        String decodePassword = new String(Base64.decode(valRegisDTO.getPassword()));
+
+        GlobalFunction.matchingPattern(decodePassword,"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
+                "password","Isi Password dengan benar!!","usr",result);
+
+        valRegisDTO.setPassword(decodePassword);
+
+        if (result.hasErrors()) {
+            model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
+            return ConstantPage.REGISTER_PAGE;
+        }
+
+        /** REQUEST Regis */
+        ResponseEntity<Object> response = null;
+        ResponseEntity<Object> responseVerify = null;
+
+        try{
+
+            response = authService.regis(valRegisDTO);
+//            System.out.println(response);
+            Map<String,Object> map = (Map<String, Object>) response.getBody();
+            Map<String,Object> data = (Map<String, Object>) map.get("data");
+
+            String otp = (String) data.get("otp");
+            String email = (String) data.get("email");
+
+            ValVerifyOTPRegisDTO valVerifyOTPRegisDTO = new ValVerifyOTPRegisDTO();
+            valVerifyOTPRegisDTO.setOtp(otp);
+            valVerifyOTPRegisDTO.setEmail(email);
+            response = authService.verifyRegis(valVerifyOTPRegisDTO);
+
+//            System.out.println("Body Response : "+ltMenu);
+//            System.out.println("Token JWT : "+tokenJwt);
+
+        }catch (Exception e){
+            model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
+            result.rejectValue("username", "error.user", "Format Huruf kecil ,numeric dan titik saja min 4 max 20 karakter, contoh : fauzan.123");
+            result.rejectValue("password", "error.user", "Format minimal 1 angka, 1 huruf, min 8 karakter, contoh : aB412345");
+            result.rejectValue("confirmPassword", "error.user", "Format minimal 1 angka, 1 huruf, min 8 karakter, contoh : aB412345");
+            result.rejectValue("email", "error.user", "Format tidak valid contoh : user_name123@sub.domain.com");
+            result.rejectValue("nama", "error.user", "Hanya Alfabet dan spasi Minimal 4 Maksimal 50");
+
+            return ConstantPage.REGISTER_PAGE;
+
+        }
+//        webRequest.setAttribute("MENU_NAVBAR",menuNavBar,1);
+//        model.addAttribute("MENU_NAVBAR",menuNavBar);
+
+        return "redirect:"+ConstantPage.DEFAULT_PAGE;
     }
 
     @GetMapping("/logout")
