@@ -4,6 +4,7 @@ import com.juaracoding.kepulthymeleaf.config.OtherConfig;
 import com.juaracoding.kepulthymeleaf.dto.validation.ValLoginDTO;
 import com.juaracoding.kepulthymeleaf.dto.validation.ValRegisDTO;
 import com.juaracoding.kepulthymeleaf.dto.validation.ValVerifyOTPRegisDTO;
+import com.juaracoding.kepulthymeleaf.handler.FeignCustomException;
 import com.juaracoding.kepulthymeleaf.httpservice.AuthService;
 import com.juaracoding.kepulthymeleaf.security.BcryptImpl;
 import com.juaracoding.kepulthymeleaf.utils.ConstantPage;
@@ -85,11 +86,13 @@ public class AuthController {
 //            System.out.println("Body Response : "+ltMenu);
 //            System.out.println("Token JWT : "+tokenJwt);
 
-        }catch (Exception e){
+        }catch (FeignCustomException e){
+            Map<String, Object> errorBody = e.getErrorBody();
+            model.addAttribute("errorMessage", errorBody.get("message"));
             GlobalFunction.getCaptchaLogin(valLoginDTO);
             model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
-            result.rejectValue("username", "error.user", "Username / Password Salah");
-            result.rejectValue("password", "error.user", "Username / Password Salah");
+            result.rejectValue("username", "error.user", (String) errorBody.get("message"));
+            result.rejectValue("password", "error.user", (String) errorBody.get("message"));
             return ConstantPage.LOGIN_PAGE;
 
         }
@@ -155,13 +158,15 @@ public class AuthController {
 //            System.out.println("Body Response : "+ltMenu);
 //            System.out.println("Token JWT : "+tokenJwt);
 
-        }catch (Exception e){
+        }catch (FeignCustomException e){
+            Map<String, Object> errorBody = e.getErrorBody();
+            model.addAttribute("errorMessage", errorBody.get("message"));
             model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
-            result.rejectValue("username", "error.user", "Format Huruf kecil ,numeric dan titik saja min 4 max 20 karakter, contoh : fauzan.123");
-            result.rejectValue("password", "error.user", "Format minimal 1 angka, 1 huruf, min 8 karakter, contoh : aB412345");
-            result.rejectValue("confirmPassword", "error.user", "Format minimal 1 angka, 1 huruf, min 8 karakter, contoh : aB412345");
-            result.rejectValue("email", "error.user", "Format tidak valid contoh : user_name123@sub.domain.com");
-            result.rejectValue("nama", "error.user", "Hanya Alfabet dan spasi Minimal 4 Maksimal 50");
+//            result.rejectValue("username", "error.user", "Format Huruf kecil ,numeric dan titik saja min 4 max 20 karakter, contoh : fauzan.123");
+//            result.rejectValue("password", "error.user", "Format minimal 1 angka, 1 huruf, min 8 karakter, contoh : aB412345");
+//            result.rejectValue("confirmPassword", "error.user", "Format minimal 1 angka, 1 huruf, min 8 karakter, contoh : aB412345");
+//            result.rejectValue("email", "error.user", "Format tidak valid contoh : user_name123@sub.domain.com");
+//            result.rejectValue("nama", "error.user", "Hanya Alfabet dan spasi Minimal 4 Maksimal 50");
 
             return ConstantPage.REGISTER_PAGE;
 

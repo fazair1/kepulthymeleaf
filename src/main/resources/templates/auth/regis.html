@@ -70,10 +70,9 @@
                 <li id="errorEmail" class="error" />
             </ul>
         </div>
-
-        <!--            <div>-->
-        <!--                <input type="hidden" th:field="*{sesId}">-->
-        <!--            </div>-->
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            <p th:text="${errorMessage}"></p>
+        </div>
 
         <button class="btn mt-3" type="button" id="button-register">Register</button>
     </form>
