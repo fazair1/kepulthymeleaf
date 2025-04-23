@@ -26,8 +26,7 @@ public class DefaultController {
 
     @GetMapping("/home")
     public String home(Model model, WebRequest webRequest) {
-//        model.addAttribute("USR_NAME",webRequest.getAttribute("USR_NAME",1));
-//        model.addAttribute("MENU_NAVBAR",webRequest.getAttribute("MENU_NAVBAR",1));
+        GlobalFunction.setGlobalAttribute(model, webRequest);
         return "auth/home";
     }
 

@@ -34,7 +34,9 @@
         <!-- Admin Dropdown -->
         <li class="nav-item dropdown">
           <a th:if="${USR_NAME != null} " class="nav-link dropdown-toggle fw-bold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-            Admin
+              <div th:if="${AKSES}" th:text="${AKSES}">
+              </div>
+
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" th:if="${USR_NAME != null}" th:href="@{/auth/logout}">Logout</a></li>

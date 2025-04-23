@@ -41,6 +41,7 @@ public class GlobalFunction {
     public static void setGlobalAttribute(Model model, WebRequest request){
         model.addAttribute("USR_NAME",request.getAttribute("USR_NAME",1));
         model.addAttribute("MENU_NAVBAR",request.getAttribute("MENU_NAVBAR",1));
+        model.addAttribute("AKSES",request.getAttribute("AKSES",1));
 
     }
 

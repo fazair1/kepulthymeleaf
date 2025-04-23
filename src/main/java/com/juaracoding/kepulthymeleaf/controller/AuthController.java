@@ -73,6 +73,7 @@ public class AuthController {
         ResponseEntity<Object> response = null;
         String tokenJwt = "";
         String menuNavBar = "";
+        String akses = "";
 
         try{
             response = authService.login(valLoginDTO);
@@ -82,6 +83,8 @@ public class AuthController {
 //            List<Map<String,Object>> ltMenu = (List<Map<String, Object>>) data.get("menu");
 //            menuNavBar = new GenerateStringMenu().stringMenu(ltMenu);
             tokenJwt = (String) data.get("token");
+            akses = (String) data.get("akses");
+
 //            System.out.println("Body Response : "+ltMenu);
 //            System.out.println("Token JWT : "+tokenJwt);
 
@@ -97,10 +100,9 @@ public class AuthController {
         webRequest.setAttribute("JWT",tokenJwt,1    );
         webRequest.setAttribute("USR_NAME",valLoginDTO.getUsername(),1);
         webRequest.setAttribute("PASSWORD",valLoginDTO.getPassword(),1);
+        webRequest.setAttribute("AKSES",akses,1);
 
-        model.addAttribute("USR_NAME",valLoginDTO);
-        model.addAttribute("MENU_NAVBAR",menuNavBar);
-
+        GlobalFunction.setGlobalAttribute(model, webRequest);
         return ConstantPage.HOME_PAGE;
     }
 
