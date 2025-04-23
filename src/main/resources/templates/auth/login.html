@@ -23,8 +23,6 @@
 
         <!-- Login Form -->
         <div class="col-md-6">
-            <!-- Flash error message -->
-            <div th:if="${authProblem != null}" class="alert alert-danger text-center fw-bold" th:text="${authProblem}"></div>
 
             <div class="text-center mb-4">
 <!--                <img th:src="@{/images/logo.png}" alt="Logo" width="80">-->
@@ -33,6 +31,11 @@
             </div>
 
             <form th:action="@{/auth/login}" method="post" th:object="${usr}" id="form-login" class="p-4 border rounded shadow-sm bg-light">
+
+                <!-- Global Error dari Backend -->
+                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert" th:text="${errorMessage}">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
 
                 <!-- Username -->
                 <div class="mb-3">

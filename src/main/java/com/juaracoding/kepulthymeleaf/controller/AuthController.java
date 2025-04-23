@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -91,8 +90,6 @@ public class AuthController {
             model.addAttribute("errorMessage", errorBody.get("message"));
             GlobalFunction.getCaptchaLogin(valLoginDTO);
             model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
-            result.rejectValue("username", "error.user", (String) errorBody.get("message"));
-            result.rejectValue("password", "error.user", (String) errorBody.get("message"));
             return ConstantPage.LOGIN_PAGE;
 
         }
@@ -147,26 +144,10 @@ public class AuthController {
             Map<String,Object> map = (Map<String, Object>) response.getBody();
             Map<String,Object> data = (Map<String, Object>) map.get("data");
 
-            String otp = (String) data.get("otp");
-            String email = (String) data.get("email");
-
-            ValVerifyOTPRegisDTO valVerifyOTPRegisDTO = new ValVerifyOTPRegisDTO();
-            valVerifyOTPRegisDTO.setOtp(otp);
-            valVerifyOTPRegisDTO.setEmail(email);
-            response = authService.verifyRegis(valVerifyOTPRegisDTO);
-
-//            System.out.println("Body Response : "+ltMenu);
-//            System.out.println("Token JWT : "+tokenJwt);
-
         }catch (FeignCustomException e){
             Map<String, Object> errorBody = e.getErrorBody();
             model.addAttribute("errorMessage", errorBody.get("message"));
             model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
-//            result.rejectValue("username", "error.user", "Format Huruf kecil ,numeric dan titik saja min 4 max 20 karakter, contoh : fauzan.123");
-//            result.rejectValue("password", "error.user", "Format minimal 1 angka, 1 huruf, min 8 karakter, contoh : aB412345");
-//            result.rejectValue("confirmPassword", "error.user", "Format minimal 1 angka, 1 huruf, min 8 karakter, contoh : aB412345");
-//            result.rejectValue("email", "error.user", "Format tidak valid contoh : user_name123@sub.domain.com");
-//            result.rejectValue("nama", "error.user", "Hanya Alfabet dan spasi Minimal 4 Maksimal 50");
 
             return ConstantPage.REGISTER_PAGE;
 
@@ -174,9 +155,52 @@ public class AuthController {
 //        webRequest.setAttribute("MENU_NAVBAR",menuNavBar,1);
 //        model.addAttribute("MENU_NAVBAR",menuNavBar);
 
-        return "redirect:"+ConstantPage.DEFAULT_PAGE;
+        return "redirect:"+ConstantPage.VERIFICATION_PAGE;
     }
 
+    @GetMapping("/verification")
+    public String verificationPage(Model model) {
+
+        ValVerifyOTPRegisDTO valVerifyOTPRegisDTO = new ValVerifyOTPRegisDTO();
+        model.addAttribute("verification", valVerifyOTPRegisDTO);
+        model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
+
+        return ConstantPage.VERIFICATION_PAGE;
+    }
+
+    @PostMapping("/verification")
+    public String verification(
+            @ModelAttribute("verification") @Valid ValVerifyOTPRegisDTO valVerifyOTPRegisDTO,
+            BindingResult result,
+            Model model,
+            WebRequest webRequest) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
+            return ConstantPage.VERIFICATION_PAGE;
+        }
+
+        /** REQUEST Verify */
+        ResponseEntity<Object> response = null;
+
+        try{
+
+            response = authService.verifyRegis(valVerifyOTPRegisDTO);
+            System.out.println(response);
+
+        }catch (FeignCustomException e){
+            Map<String, Object> errorBody = e.getErrorBody();
+            model.addAttribute("errorMessage", errorBody.get("message"));
+            model.addAttribute("logo", ConstantValue.LOGIN_LOGO);
+
+            return ConstantPage.VERIFICATION_PAGE;
+
+        }
+//        webRequest.setAttribute("MENU_NAVBAR",menuNavBar,1);
+//        model.addAttribute("MENU_NAVBAR",menuNavBar);
+
+        return "/auth/form-success-verification";
+    }
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().invalidate();

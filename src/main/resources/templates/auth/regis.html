@@ -27,7 +27,7 @@
             <form class="p-4 border rounded shadow" method="post" th:object="${usr}" th:action="@{/auth/regis}" id="form-register">
 
                 <!-- Global Error dari Backend -->
-                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert" th:text="${error}">
+                <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert" th:text="${errorMessage}">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 

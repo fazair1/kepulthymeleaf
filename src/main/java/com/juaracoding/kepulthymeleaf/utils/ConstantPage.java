@@ -5,6 +5,7 @@ public class ConstantPage {
     public static final String DEFAULT_PAGE = "/";
     public static final String LOGIN_PAGE = "/auth/login";
     public static final String REGISTER_PAGE = "/auth/regis";
+    public static final String VERIFICATION_PAGE = "/auth/verification";
     public static final String HOME_PAGE = "/auth/home";
     public static final String PRODUCT_MAIN_PAGE = "/product/main";
     public static final String PRODUCT_ADD_PAGE = "/product/add";
