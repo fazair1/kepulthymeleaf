@@ -11,6 +11,9 @@ public interface ProductService {
     @GetMapping
     public ResponseEntity<Object> findAll(@RequestHeader("Authorization") String token);
 
+    @GetMapping("/all")
+    public ResponseEntity<Object> allProduct(@RequestHeader("Authorization") String token);
+
     @GetMapping("/{sort}/{sortBy}/{page}")
     public ResponseEntity<Object> findByParam(
             @RequestHeader("Authorization") String token,
