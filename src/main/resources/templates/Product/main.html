@@ -5,6 +5,10 @@
     <title>Product</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!--    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">&ndash;&gt;-->
+    <link rel="stylesheet" th:href="@{/css/table.css}" type="text/css">
+    <script type="text/javascript" th:src="@{/js/modals.js}"></script>
+    <script type="text/javascript" th:src="@{/js/action.js}"></script>
+
     <style>
         body, html {
           min-height: 100vh;
@@ -39,5 +43,9 @@
 <div th:replace="~{fragment/footer :: footers}"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/umd/popper.min.js}"></script><!--wajib ada untuk modals-->
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script><!--wajib ada untuk modals-->
+
 </body>
 </html>
