@@ -34,8 +34,8 @@
         <!-- Admin Dropdown -->
         <li class="nav-item dropdown">
           <a th:if="${USR_NAME != null} " class="nav-link dropdown-toggle fw-bold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-              <div th:if="${AKSES}" th:text="${AKSES}">
-              </div>
+<!--              <div th:if="${AKSES}" th:text="${AKSES}"></div>-->
+              <span th:if="${AKSES}" th:text="${AKSES}" class="me-1"></span>
 
           </a>
           <ul class="dropdown-menu dropdown-menu-end">

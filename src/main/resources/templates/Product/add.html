@@ -4,7 +4,7 @@
 </head>
 <body>
 <form  th:action="@{/product}"
-	   th:object = "${data}" method="POST" id="addGroupMenu">
+	   th:object = "${data}" method="POST" id="addProduct">
 	<input type="hidden" value="50c9a8c2b1cb45799d8f0db5f8449c65" /><!-- id form -->
 	<div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
 		<p th:each="err : ${#fields.errors('global')}" th:text="${err}"  class="error"/>
@@ -47,7 +47,7 @@
 
 <script th:inline="javascript">
 	/*<![CDATA[*/
-        $("#addGroupMenu").submit(function(event) {
+        $("#addProduct").submit(function(event) {
               event.preventDefault(); //prevent default action
               let post_url = $(this).attr("action"); //get form action url
               let request_method = $(this).attr("method"); //get form GET/POST method

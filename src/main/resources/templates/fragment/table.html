@@ -1,51 +1,93 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div  th:fragment="main-table" style="overflow-x:auto" >
-<table >
-<thead>
-<tr>
-    <th:block th:each="map:${listKolom}">
-            <th>
-            <a class="text-light"
-               th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+${columnName}+'&value='+${value}+'&size='+${sizePerPage}}">
-                [[${map.value}]]
-            </a>
-        </th>
-    </th:block>
-    <th colspan="2">Action</th>
-</tr>
-</thead>
-<tbody>
-<th:block th:each="entry:${listContent}">
-    <tr>
-        <th:block th:each="f:${listHelper}" >
-            <td th:text="${entry.get(f)}"></td>
-        </th:block>
-        <td style="text-align: center">
-            <button type="button"
-                    th:data-title="'Edit'"
-                    th:data-server="'#server-results-edit'"
-                    onclick="funcModalsHandler(event)"
-                    th:data-url="'/'+${pathServer}+'/e/'+${entry.get('id')}"
-                    class="btn btn-primary" data-toggle="modal" data-target="#edit1">
-                Edit
-            </button>
-        </td>
-        <td style="text-align: center">
-        <button type="button" id="btnDelete"
-                onclick="getRequestHandler(event)"
-                th:data-title="${pathServer}"
-                th:data-url="'/'+${pathServer}+'/d/'+${entry.get('id')}"
-                class="btn btn-primary">
-            Delete
-        </button>
-        </td>
-</th:block>
-</tr>
-</th:block>
-
-</tbody>
-</table>
+<div th:fragment="main-table" class="table-responsive">
+    <table class="table table-bordered text-center">
+        <thead class="table-light">
+        <tr>
+            <th th:each="map:${listKolom}">
+                <a th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+${columnName}+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+            </th>
+            <th colspan="2">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry:${listContent}">
+            <td th:each="f:${listHelper}" th:text="${entry.get(f)}"></td>
+            <td>
+                <button class="btn btn-primary"
+                        th:data-title="'Edit'"
+                        th:data-server="'#server-results-edit'"
+                        onclick="funcModalsHandler(event)"
+                        th:data-url="'/'+${pathServer}+'/e/'+${entry.get('id')}"
+                        data-bs-toggle="modal" data-bs-target="#edit1">
+                    Edit Product
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-danger"
+                        onclick="getRequestHandler(event)"
+                        th:data-title="${pathServer}"
+                        th:data-url="'/'+${pathServer}+'/d/'+${entry.get('id')}">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
+
+
+
+<!--<div  th:fragment="main-table" style="overflow-x:auto" >-->
+<!--<table >-->
+<!--<thead>-->
+<!--<tr>-->
+<!--    <th:block th:each="map:${listKolom}">-->
+<!--            <th>-->
+<!--            <a class="text-light"-->
+<!--               th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+${columnName}+'&value='+${value}+'&size='+${sizePerPage}}">-->
+<!--                [[${map.value}]]-->
+<!--            </a>-->
+<!--        </th>-->
+<!--    </th:block>-->
+<!--    <th colspan="2">Action</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<th:block th:each="entry:${listContent}">-->
+<!--    <tr>-->
+<!--        <th:block th:each="f:${listHelper}" >-->
+<!--            <td th:text="${entry.get(f)}"></td>-->
+<!--        </th:block>-->
+<!--        <td style="text-align: center">-->
+<!--            <button type="button"-->
+<!--                    th:data-title="'Edit'"-->
+<!--                    th:data-server="'#server-results-edit'"-->
+<!--                    onclick="funcModalsHandler(event)"-->
+<!--                    th:data-url="'/'+${pathServer}+'/e/'+${entry.get('id')}"-->
+<!--                    class="btn btn-primary" data-toggle="modal" data-target="#edit1">-->
+<!--                Edit-->
+<!--            </button>-->
+<!--        </td>-->
+<!--        <td style="text-align: center">-->
+<!--        <button type="button" id="btnDelete"-->
+<!--                onclick="getRequestHandler(event)"-->
+<!--                th:data-title="${pathServer}"-->
+<!--                th:data-url="'/'+${pathServer}+'/d/'+${entry.get('id')}"-->
+<!--                class="btn btn-primary">-->
+<!--            Delete-->
+<!--        </button>-->
+<!--        </td>-->
+<!--</th:block>-->
+<!--</tr>-->
+<!--</th:block>-->
+
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
 
 </html>
