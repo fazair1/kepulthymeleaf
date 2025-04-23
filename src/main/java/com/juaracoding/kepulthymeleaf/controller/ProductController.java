@@ -81,7 +81,7 @@ public class ProductController {
         return ConstantPage.PRODUCT_MAIN_PAGE;
     }
 
-    @PostMapping("")
+    @PostMapping
     public String save(
             @ModelAttribute("data") @Valid ValProductDTO valProductDTO,
             BindingResult bindingResult,
