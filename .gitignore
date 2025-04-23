@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+data-session/session.mv.db
+data-session/session.trace.db
