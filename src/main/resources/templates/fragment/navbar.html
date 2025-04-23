@@ -20,7 +20,10 @@
           <a class="nav-link" th:href="@{/product}">Product List</a>
         </li>
           <li class="nav-item">
-              <a class="nav-link" th:href="@{/product-category}">Product Category List</a>
+              <a th:if="${AKSES == 'Admin'} " class="nav-link" th:href="@{/product-category}">
+                  Product Category List
+              </a>
+<!--              <a class="nav-link" th:href="@{/product-category}">Product Category List</a>-->
           </li>
 
           <li class="nav-item">
