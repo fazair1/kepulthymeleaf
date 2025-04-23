@@ -3,20 +3,20 @@
 <head>
 </head>
 <body>
-<form  th:action="@{/product}"
-	   th:object = "${data}" method="POST" id="addProduct">
+<form  th:action="@{/product-category}"
+	   th:object = "${data}" method="POST" id="addProductCategory">
 	<input type="hidden" value="50c9a8c2b1cb45799d8f0db5f8449c65" /><!-- id form -->
 	<div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
 		<p th:each="err : ${#fields.errors('global')}" th:text="${err}"  class="error"/>
 	</div>
 	<div class ="form-group">
-		<label> Nama Group </label>
+		<label> Nama </label>
 		<input
 				type = "text"
 				name = "nama"
 				th:field = "*{nama}"
 				class = "form-control"
-				placeholder="Masukkan Nama Group"
+				placeholder="Masukkan Nama Product"
 		/>
 		<ul>
 			<li th:each="err : ${#fields.errors('nama')}" th:text="${err}" class="error" />
@@ -37,6 +37,30 @@
 		</ul>
 	</div>
 
+	<div class ="form-group">
+		<label>Group Menu</label>
+		<input
+				type = "text"
+				id="namaProduct"
+				name = "namaProductCategory"
+				th:field = "*{productCategory.nama}"
+				class = "form-control"
+				placeholder="Pilih"
+				disabled="disabled"
+		/>
+		<input type="hidden" th:field="*{productCategory.id}" id="idGroup" />
+		<button
+				th:id="pilih-data"
+				th:onclick="funcModalsDataTableHandler('DataProductCategory','#dataTable','/product-category/idGroup/namaProduct/asc/id/0?column=id&value=&size=5','#data-result')"
+				data-toggle="modal" data-target="#dataTable"
+				class="btn btn-primary" type="button">
+			Pilih
+		</button>
+		<ul>
+			<li th:each="err : ${#fields.errors('path')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+
 	<div class = "modal-footer">
 		<button type="submit" class = "btn btn-primary">
 			Submit
@@ -47,7 +71,7 @@
 
 <script th:inline="javascript">
 	/*<![CDATA[*/
-        $("#addProduct").submit(function(event) {
+        $("#addProductCategory").submit(function(event) {
               event.preventDefault(); //prevent default action
               let post_url = $(this).attr("action"); //get form action url
               let request_method = $(this).attr("method"); //get form GET/POST method
@@ -67,7 +91,7 @@
                 {
                     $('#add1').modal('hide');
                     confirm("DATA BERHASIL DISIMPAN");
-                    window.location = "/group-menu";// ini refresh page nya
+                    window.location = "/product-category";// ini refresh page nya
                 }
                 });
             });
