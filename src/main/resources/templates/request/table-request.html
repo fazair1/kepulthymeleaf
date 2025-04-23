@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="main-table" class="table-responsive">
+    <table class="table table-bordered text-center">
+        <thead class="table-light">
+        <tr>
+            <th th:each="map:${listKolom}">
+                <a th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+${columnName}+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+            </th>
+            <th colspan="2">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry:${transactionList}">
+            <td th:each="f:${listHelper}">
+                <div th:if="${f != 'listProduct'}" th:text="${entry.get(f)}"></div>
+                <div th:if="${f == 'listProduct'}" >
+                    <ul th:each="product:${entry.listProduct}">
+                        <li >
+                            <p th:text="${product.id}"></p>
+                            <p th:text="${product.nama}"></p>
+                            <p th:text="${product.deskripsi}"></p>
+                            <p th:text="${product.namaCategory}"></p>
+                        </li>
+                    </ul>
+
+                </div>
+            </td>
+            <td>
+                <button class="btn btn-primary"
+                        th:data-title="'Edit'"
+                        th:data-server="'#server-results-edit'"
+                        onclick="funcModalsHandler(event)"
+                        th:data-url="'/'+${pathServer}+'/e/'+${entry.get('id')}"
+                        data-bs-toggle="modal" data-bs-target="#edit1">
+                    Edit Product
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-danger"
+                        onclick="getRequestHandler(event)"
+                        th:data-title="${pathServer}"
+                        th:data-url="'/'+${pathServer}+'/d/'+${entry.get('id')}">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</html>
