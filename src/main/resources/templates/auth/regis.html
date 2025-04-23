@@ -1,148 +1,162 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <link rel="stylesheet" th:href="@{/css/login.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/error.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.6.2/css/bootstrap.min.css}" type="text/css"/>
-    <title>Register</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/error.css}">
 </head>
 <body>
-<div class="wrapper">
-    <div class="logo">
-        <img th:src="@{${logo}}" alt="">
-    </div>
-    <div class="text-center mt-4 name">
-        Twitter
-    </div>
-    <form class="p-3 mt-3" id="form-register" method="post" th:object="${usr}" th:action="@{/auth/regis}">
-        <div class="form-field d-flex align-items-center">
-            <span class="far fa-user"></span>
-            <input type="text" name="username" id="username" th:field="*{username}" placeholder="Username">
-        </div>
-        <div>
-            <ul class="error-ul">
-                <li th:each="err : ${#fields.errors('username')}" th:text="${err}" class="error" />
-                <li id="errorUsername" class="error" />
-            </ul>
+
+<div class="container">
+    <div class="row justify-content-center align-items-center vh-100">
+        <!-- Form -->
+        <div class="col-md-6">
+            <div class="text-center mb-4">
+<!--                <img th:src="@{/images/logo.png}" alt="Logo" width="80" class="mb-2">-->
+                <img th:src="@{${logo}}" alt="" width="80" class="mb-2">
+                <h4 class="fw-bold">Registrasi Akun</h4>
+            </div>
+
+            <form class="p-4 border rounded shadow" method="post" th:object="${usr}" th:action="@{/auth/regis}" id="form-register">
+
+                <!-- Global Error dari Backend -->
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert" th:text="${error}">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <!-- Username -->
+                <div class="mb-3">
+                    <label for="username" class="form-label fw-semibold">Username</label>
+                    <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Username">
+                    <div class="text-danger small" th:if="${#fields.hasErrors('username')}" th:text="${#fields.errors('username')[0]}"></div>
+                    <div class="text-danger small" id="errorUsername"></div>
+                </div>
+
+                <!-- Nama Lengkap -->
+                <div class="mb-3">
+                    <label for="nama" class="form-label fw-semibold">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="nama" th:field="*{nama}" placeholder="Nama Lengkap">
+                    <div class="text-danger small" th:if="${#fields.hasErrors('nama')}" th:text="${#fields.errors('nama')[0]}"></div>
+                    <div class="text-danger small" id="errorNama"></div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-semibold">Password</label>
+                    <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="********">
+                    <div class="text-danger small" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password')[0]}"></div>
+                    <div class="text-danger small" id="errorPwd"></div>
+                </div>
+
+                <!-- Konfirmasi Password -->
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label fw-semibold">Konfirmasi Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}" placeholder="********">
+                    <div class="text-danger small" th:if="${#fields.hasErrors('confirmPassword')}" th:text="${#fields.errors('confirmPassword')[0]}"></div>
+                    <div class="text-danger small" id="errorConfPwd"></div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold">Email</label>
+                    <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="email@example.com">
+                    <div class="text-danger small" th:if="${#fields.hasErrors('email')}" th:text="${#fields.errors('email')[0]}"></div>
+                    <div class="text-danger small" id="errorEmail"></div>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-grid">
+                    <button type="button" class="btn btn-success" id="button-register">Daftar</button>
+                </div>
+
+                <p class="text-center mt-3">
+                    Sudah punya akun? <a th:href="@{/}" class="text-decoration-none">Login di sini</a>
+                </p>
+            </form>
         </div>
 
-        <div class="form-field d-flex align-items-center">
-            <span class="far fa-user"></span>
-            <input type="text" name="nama" id="nama" th:field="*{nama}" placeholder="Nama">
+        <!-- Gambar -->
+        <div class="col-md-6 d-none d-md-block">
+            <img th:src="@{/images/register.jpg}" class="img-fluid" alt="Register Illustration">
         </div>
-        <div>
-            <ul class="error-ul">
-                <li th:each="err : ${#fields.errors('nama')}" th:text="${err}" class="error" />
-                <li id="errorNama" class="error" />
-            </ul>
-        </div>
-
-        <div class="form-field d-flex align-items-center">
-            <span class="fas fa-key"></span>
-            <input type="password" name="password" id="password" th:field="*{password}" placeholder="Password">
-        </div>
-        <div>
-            <ul class="error-ul">
-                <li th:each="err : ${#fields.errors('password')}" th:text="${err}" class="error" />
-                <li id="errorPwd" class="error" />
-            </ul>
-        </div>
-
-        <div class="form-field d-flex align-items-center">
-            <span class="fas fa-key"></span>
-            <input type="password" name="comfirmPassword" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirm Password">
-        </div>
-        <div>
-            <ul class="error-ul">
-                <li th:each="err : ${#fields.errors('confirmPassword')}" th:text="${err}" class="error" />
-                <li id="errorConfPwd" class="error" />
-            </ul>
-        </div>
-
-        <div class="form-field d-flex align-items-center">
-            <span class="fas fa-key"></span>
-            <input type="text" name="email" id="email" th:field="*{email}" placeholder="Email">
-        </div>
-        <div>
-            <ul class="error-ul">
-                <li th:each="err : ${#fields.errors('email')}" th:text="${err}" class="error" />
-                <li id="errorEmail" class="error" />
-            </ul>
-        </div>
-        <div th:if="${errorMessage}" class="alert alert-danger">
-            <p th:text="${errorMessage}"></p>
-        </div>
-
-        <button class="btn mt-3" type="button" id="button-register">Register</button>
-    </form>
-    <div class="text-center fs-6">
-        <a href="/">Login</a>
     </div>
 </div>
 
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    $(document).ready(function (){
-        $('#button-register').on('click',function (e){
+    function clearAllErrorMessage() {
+        $("#errorUsername, #errorNama, #errorPwd, #errorConfPwd, #errorEmail").text("");
+    }
+
+    $(document).ready(function () {
+        $('#button-register').on('click', function (e) {
             e.preventDefault();
             clearAllErrorMessage();
-            var isOk = true;
-            var pwd = $("#password").val();
-            var confPwd = $("#confirmPassword").val();
-            var username = $("#username").val();
-            var nama = $("#nama").val();
-            var email = $("#email").val();
-            var regex =/^([a-z0-9\.]{4,20})$/;
-            if(!regex.test(username)){
-                isOk=false;
-                document.getElementById("errorUsername").innerHTML = "Username nya error !!";
+
+            let isOk = true;
+            const username = $("#username").val().trim();
+            const nama = $("#nama").val().trim();
+            const pwd = $("#password").val();
+            const confPwd = $("#confirmPassword").val();
+            const email = $("#email").val().trim();
+
+            // Validasi
+            if (username === "") {
+                isOk = false;
+                $("#errorUsername").text("Username wajib diisi.");
+            } else if (!/^[a-z0-9.]{4,20}$/.test(username)) {
+                isOk = false;
+                $("#errorUsername").text("Username harus 4-20 karakter, huruf kecil dan titik.");
             }
-            regex =/^[a-zA-Z\s]{4,50}$/;
-            if(!regex.test(nama)){
-                isOk=false;
-                document.getElementById("errorNama").innerHTML = "Nama nya error !!";
+
+            if (nama === "") {
+                isOk = false;
+                $("#errorNama").text("Nama wajib diisi.");
+            } else if (!/^[a-zA-Z\s]{4,50}$/.test(nama)) {
+                isOk = false;
+                $("#errorNama").text("Nama hanya boleh huruf dan spasi (4-50 karakter).");
             }
-            regex =/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-            if(!regex.test(pwd)){
-                isOk=false;
-                document.getElementById("errorPwd").innerHTML = "Password nya error !!";
+
+            if (pwd === "") {
+                isOk = false;
+                $("#errorPwd").text("Password wajib diisi.");
+            } else if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pwd)) {
+                isOk = false;
+                $("#errorPwd").text("Password minimal 8 karakter dan kombinasi huruf + angka.");
             }
-            regex =/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-            if(!regex.test(confPwd)){
-                isOk=false;
-                document.getElementById("errorConfPwd").innerHTML = "Password nya error !!";
+
+            if (confPwd === "") {
+                isOk = false;
+                $("#errorConfPwd").text("Konfirmasi password wajib diisi.");
+            } else if (pwd !== confPwd) {
+                isOk = false;
+                $("#errorConfPwd").text("Konfirmasi password tidak cocok.");
             }
-            if(!pwd==confPwd) {
-                isOk=false;
-                document.getElementById("errorConfPwd").innerHTML = "Password nya error !!";
+
+            if (email === "") {
+                isOk = false;
+                $("#errorEmail").text("Email wajib diisi.");
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                isOk = false;
+                $("#errorEmail").text("Format email tidak valid.");
             }
-            regex =/^(?=.{1,256})(?=.{1,64}@.{1,255}$)(?:(?![.])[a-zA-Z0-9._%+-]+(?:(?<!\\)[.][a-zA-Z0-9-]+)*?)@[a-zA-Z0-9.-]+(?:\.[a-zA-Z]{2,50})+$/;
-            if(!regex.test(email)){
-                isOk=false;
-                document.getElementById("errorEmail").innerHTML = "Email nya error !!";
-            }
-            if(isOk){
-                var pwdCrypto = btoa(pwd);
-                $("#password").val(pwdCrypto);
+
+            if (isOk) {
+                $("#password").val(btoa(pwd));  // encode password (opsional)
                 $("#form-register").submit();
             }
-            clearAllField();
         });
     });
-    function clearAllField(){
-        $("#password").val("");
-        $("#confirmPassword").val("");
-    }
-
-    function clearAllErrorMessage(){
-        document.getElementById("errorUsername").innerHTML = "";
-        document.getElementById("errorNama").innerHTML = "";
-        document.getElementById("errorPwd").innerHTML = "";
-        document.getElementById("errorConfPwd").innerHTML = "";
-        document.getElementById("errorEmail").innerHTML = "";
-    }
-
 </script>
+
 </body>
 </html>

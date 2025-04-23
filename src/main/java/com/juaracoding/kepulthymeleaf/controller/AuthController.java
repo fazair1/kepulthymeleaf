@@ -73,7 +73,7 @@ public class AuthController {
         /** REQUEST LOGIN */
         ResponseEntity<Object> response = null;
         String tokenJwt = "";
-//        String menuNavBar = "";
+        String menuNavBar = "";
 
         try{
             response = authService.login(valLoginDTO);
@@ -96,13 +96,13 @@ public class AuthController {
             return ConstantPage.LOGIN_PAGE;
 
         }
-//        webRequest.setAttribute("MENU_NAVBAR",menuNavBar,1);
-        webRequest.setAttribute("JWT",tokenJwt,1);
+        webRequest.setAttribute("MENU_NAVBAR",menuNavBar,1);
+        webRequest.setAttribute("JWT",tokenJwt,1    );
         webRequest.setAttribute("USR_NAME",valLoginDTO.getUsername(),1);
         webRequest.setAttribute("PASSWORD",valLoginDTO.getPassword(),1);
 
         model.addAttribute("USR_NAME",valLoginDTO);
-//        model.addAttribute("MENU_NAVBAR",menuNavBar);
+        model.addAttribute("MENU_NAVBAR",menuNavBar);
 
         return ConstantPage.HOME_PAGE;
     }
