@@ -11,7 +11,7 @@ public class RepTransactionDTO {
 
     private String namaAdmin;
 
-    private List<Map<String, Object>> listProduct;
+    private List<Map<String, Object>> ltProduct;
 
     private String namaStatus;
 
@@ -23,12 +23,12 @@ public class RepTransactionDTO {
         this.id = id;
     }
 
-    public List<Map<String, Object>> getListProduct() {
-        return listProduct;
+    public List<Map<String, Object>> getLtProduct() {
+        return ltProduct;
     }
 
-    public void setListProduct(List<Map<String, Object>> listProduct) {
-        this.listProduct = listProduct;
+    public void setLtProduct(List<Map<String, Object>> ltProduct) {
+        this.ltProduct = ltProduct;
     }
 
     public String getNamaAdmin() {

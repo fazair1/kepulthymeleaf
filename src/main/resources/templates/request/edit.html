@@ -1,0 +1,68 @@
+<form  th:action="@{/transaction/e/{id} (id=${data.id})}"
+	   th:object = "${data}" method="POST" id="editTransaction">
+	<input type="hidden" value="50c9a8c2b1cb45799d8f0db5f8449c65" /><!-- id form -->
+	<div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
+		<p th:each="err : ${#fields.errors('global')}" th:text="${err}"  class="error"/>
+	</div>
+	<div class ="form-group">
+		<label> Id Transaksi </label>
+		<input type="text" th:value="${data.id}" readonly /><!-- id form -->
+
+	</div>
+
+	<div class ="form-group">
+		<label> Status Transaksi </label>
+		<select name = "namaStatus" th:field = "*{namaStatus}" class = "form-control">
+			<option value="Waiting for Approval">Waiting for Approval</option>
+			<option value="Approved">Approved</option>
+
+		</select>
+		<ul>
+			<li th:each="err : ${#fields.errors('namaStatus')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+	<div class ="form-group">
+		<label> Product List </label>
+		<select id="ltProduct" name="ltProduct" th:field="*{ltProduct}" size="10" multiple="multiple">
+			<option th:each="productList: ${listMapDataProduct}" th:value="${productList.id}" th:text="${productList.id + '. ' + productList.nama + ' - ' + productList.deskripsi}"></option>
+		</select>
+	</div>
+
+
+	<div class = "modal-footer">
+		<button type="submit" class = "btn btn-primary">
+			Submit
+		</button>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	</div>
+</form>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    $("#editTransaction").submit(function(event) {
+          event.preventDefault(); //prevent default action
+          let post_url = $(this).attr("action"); //get form action url
+          let request_method = $(this).attr("method"); //get form GET/POST method
+          let form_data = $(this).serialize(); //Encode form elements for submission
+          $.ajax({
+              url: post_url,
+              type: request_method,
+              data: form_data
+            }).done(function(response) { //
+            let pattern = /50c9a8c2b1cb45799d8f0db5f8449c65/i;
+			let result = response.match(pattern);
+            if(result)
+            {
+				$("#server-results-edit").html(response);
+            }
+            else
+            {
+				$('#add1').modal('hide');
+				confirm("DATA BERHASIL DIUBAH!!");
+				window.location = "/transaction";// ini refresh page nya
+            }
+            });
+        });
+
+/*]]>*/
+</script>

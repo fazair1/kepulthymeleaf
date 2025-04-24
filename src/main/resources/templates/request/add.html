@@ -15,6 +15,7 @@
 			<option th:each="productList: ${x}" th:value="${productList.id}" th:text="${productList.id + '. ' + productList.nama + ' - ' + productList.deskripsi}"></option>
 		</select>
 	</div>
+	<input th:field = "*{namaStatus}" type="hidden" name = "namaStatus" value="Waiting for Approval" /><!-- id form -->
 
 	<div class = "modal-footer">
 		<button type="submit" class = "btn btn-primary">

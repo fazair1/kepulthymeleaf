@@ -1,12 +1,12 @@
 package com.juaracoding.kepulthymeleaf.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juaracoding.kepulthymeleaf.dto.relation.RelProductDTO;
+import com.juaracoding.kepulthymeleaf.dto.relation.RelStatusDTO;
 import com.juaracoding.kepulthymeleaf.dto.report.RepTransactionDTO;
 import com.juaracoding.kepulthymeleaf.dto.response.RespProductDTO;
-import com.juaracoding.kepulthymeleaf.dto.validation.SelectProductDTO;
-import com.juaracoding.kepulthymeleaf.dto.validation.SelectTransactionDTO;
-import com.juaracoding.kepulthymeleaf.dto.validation.ValProductCategoryDTO;
-import com.juaracoding.kepulthymeleaf.dto.validation.ValTransactionDTO;
+import com.juaracoding.kepulthymeleaf.dto.response.RespTransactionDTO;
+import com.juaracoding.kepulthymeleaf.dto.validation.*;
 import com.juaracoding.kepulthymeleaf.httpservice.ProductService;
 import com.juaracoding.kepulthymeleaf.httpservice.TransactionService;
 import com.juaracoding.kepulthymeleaf.utils.ConstantPage;
@@ -28,10 +28,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("transaction")
@@ -106,20 +104,33 @@ public class TransactionController {
         ValTransactionDTO valTransactionDTO = new ValTransactionDTO();
         List<RelProductDTO> relProductDTOList = new ArrayList<>();
         RelProductDTO relProductDTO = new RelProductDTO();
+
         for (String s:
                 selectTransactionDTO.getLtProduct()) {
             relProductDTO = new RelProductDTO();
             relProductDTO.setId(Long.parseLong(s));
             relProductDTOList.add(relProductDTO);
         }
+        RelStatusDTO relStatusDTO = new RelStatusDTO();
+
+        if (selectTransactionDTO.getNamaStatus().equals("Approved")) {
+            relStatusDTO.setNama(selectTransactionDTO.getNamaStatus());
+            relStatusDTO.setId(2L);
+            valTransactionDTO.setStatus(relStatusDTO);
+
+        } else if (selectTransactionDTO.getNamaStatus().equals("Waiting for Approval")) {
+            relStatusDTO.setNama(selectTransactionDTO.getNamaStatus());
+            relStatusDTO.setId(1L);
+            valTransactionDTO.setStatus(relStatusDTO);
+        }
         valTransactionDTO.setLtProduct(relProductDTOList);
         return valTransactionDTO;
     }
 
-    /** fungsi untuk mengambil data web yang sudah di set sebelumnya di function openModalAdd , agar tidak menghubungi server lagi meminta data menu yang sama */
+    /** fungsi untuk mengambil data web yang sudah di set sebelumnya di function openModalAdd , agar tidak menghubungi server lagi meminta data product yang sama */
     private void setDataTempAdd(Model model , WebRequest webRequest){
-        Long data1[] = (Long[]) webRequest.getAttribute("data1",1);//menampung data id dari all menu
-        String data2[] = (String[]) webRequest.getAttribute("data2",1);//menampung data nama dari all menu
+        Long data1[] = (Long[]) webRequest.getAttribute("data1",1);//menampung data id dari all product
+        String data2[] = (String[]) webRequest.getAttribute("data2",1);//menampung data nama dari all product
         List<SelectProductDTO> listAllProduct = new ArrayList<>();
         SelectProductDTO selectProductDTO = null;
         for(int i=0;i<data1.length;i++){
@@ -159,11 +170,87 @@ public class TransactionController {
         webRequest.setAttribute("data1",data1,1);
         webRequest.setAttribute("data2",data2,1);
 
-        model.addAttribute("data",new ValTransactionDTO());
+        model.addAttribute("data",new SelectTransactionDTO());
         model.addAttribute("x",ltProduct);
 
         return ConstantPage.TRANSACTION_ADD_PAGE;
     }
+
+    @GetMapping("/e/{id}")
+    public String openModalsEdit(
+            Model model,
+            @PathVariable(value = "id") Long id,
+            WebRequest webRequest){
+        ResponseEntity<Object> response = null;
+        ResponseEntity<Object> responseProduct = null;
+        String jwt = GlobalFunction.tokenCheck(model, webRequest);
+        if(jwt.equals(ConstantPage.LOGIN_PAGE)){
+            return jwt;
+        }
+        try{
+            response = transactionService.findById(jwt,id);
+            responseProduct = productService.allProduct(jwt);
+        }catch (Exception e){
+
+        }
+        /** cara untuk menyimpan data di session, kurang lebih sama untuk CSR data nya disimpan di dalam storage di web browser
+         *  Notes : table session tidak dapat menyimpan data berbentuk object serialize, sehingga nanti dirangkai menjadi array 1 atau 2 dimensi tergantung kebuuthan
+         */
+//        setDataMenuToEdit(response,responseProduct,model,webRequest);
+        Map<String,Object> map = (Map<String, Object>) response.getBody();
+        Map<String,Object> mapData = (Map<String, Object>) map.get("data");
+        Map<String,Object> mapProduct = (Map<String, Object>) responseProduct.getBody();
+        List<Map<String,Object>> listMapDataProduct = (List<Map<String, Object>>) mapProduct.get("data");
+
+        Map<String,Object> mapStatus = (Map<String, Object>) mapData.get("status");
+        String status = (String) mapStatus.get("nama");
+
+        List<Map<String, Object>> listMapProduct = (List<Map<String, Object>>) mapData.get("ltProduct");
+
+        RepTransactionDTO repTransactionDTO = new RepTransactionDTO();
+        Map<String,Object> mapTransaction = new HashMap<>();
+
+        repTransactionDTO.setId(id);
+        repTransactionDTO.setNamaStatus(status);
+        repTransactionDTO.setLtProduct(listMapProduct);
+        model.addAttribute("data", repTransactionDTO);
+        model.addAttribute("listMapDataProduct", listMapDataProduct);
+
+//        return "/request/test";
+        return ConstantPage.TRANSACTION_EDIT_PAGE;
+    }
+
+
+    @PostMapping("/e/{id}")
+    public String edit(
+            @ModelAttribute("data") @Valid SelectTransactionDTO selectTransactionDTO,
+            BindingResult bindingResult,
+            Model model,
+            @PathVariable(value = "id") Long id,
+            WebRequest webRequest){
+
+        selectTransactionDTO.setId(id);
+        if(bindingResult.hasErrors()){
+            model.addAttribute("data",selectTransactionDTO);
+            return ConstantPage.TRANSACTION_EDIT_PAGE;
+        }
+
+        ValTransactionDTO valTransactionDTO = convertToValTransactionDTO(selectTransactionDTO);
+        ResponseEntity<Object> response = null;
+        String jwt = GlobalFunction.tokenCheck(model, webRequest);
+        if(jwt.equals(ConstantPage.LOGIN_PAGE)){
+            return jwt;
+        }
+
+        try{
+            response = transactionService.edit(jwt,id,valTransactionDTO);
+        }catch (Exception e){
+            model.addAttribute("data",valTransactionDTO);
+            return ConstantPage.TRANSACTION_EDIT_PAGE;
+        }
+        return ConstantPage.SUCCESS_MESSAGE;
+    }
+
 
     @GetMapping("/{sort}/{sortBy}/{page}")
     public String findByParam(

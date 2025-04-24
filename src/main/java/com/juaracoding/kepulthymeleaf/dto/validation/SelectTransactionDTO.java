@@ -7,9 +7,23 @@ import java.util.List;
 
 public class SelectTransactionDTO {
 
+    private Long id;
+
+    private String namaDivisi;
+
+    private String namaAdmin;
+
     private List<String> ltProduct;
 
-    private RelStatusDTO status;
+    private String namaStatus;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public List<String> getLtProduct() {
         return ltProduct;
@@ -19,11 +33,27 @@ public class SelectTransactionDTO {
         this.ltProduct = ltProduct;
     }
 
-    public RelStatusDTO getStatus() {
-        return status;
+    public String getNamaAdmin() {
+        return namaAdmin;
     }
 
-    public void setStatus(RelStatusDTO status) {
-        this.status = status;
+    public void setNamaAdmin(String namaAdmin) {
+        this.namaAdmin = namaAdmin;
+    }
+
+    public String getNamaDivisi() {
+        return namaDivisi;
+    }
+
+    public void setNamaDivisi(String namaDivisi) {
+        this.namaDivisi = namaDivisi;
+    }
+
+    public String getNamaStatus() {
+        return namaStatus;
+    }
+
+    public void setNamaStatus(String namaStatus) {
+        this.namaStatus = namaStatus;
     }
 }

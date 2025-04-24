@@ -13,6 +13,7 @@ public class ConstantPage {
     public static final String PRODUCT_CATEGORY_ADD_PAGE = "/productcategory/add";
     public static final String TRANSACTION_MAIN_PAGE = "/request/main";
     public static final String TRANSACTION_ADD_PAGE = "/request/add";
+    public static final String TRANSACTION_EDIT_PAGE = "/request/edit";
 
     public static final String SUCCESS_MESSAGE = "/form-success";
     public static final String DATA_TABLE_MODALS = "global/data-table-form";

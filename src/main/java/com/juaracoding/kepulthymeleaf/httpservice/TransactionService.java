@@ -18,6 +18,15 @@ public interface TransactionService {
     public ResponseEntity<Object> save(@RequestHeader("Authorization") String token,
                                        @RequestBody ValTransactionDTO valTransactionDTO);
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> edit(@RequestHeader("Authorization") String token,
+                                       @PathVariable(value = "id") Long id,
+                                       @RequestBody ValTransactionDTO valTransactionDTO);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findById(@RequestHeader("Authorization") String token,
+                                           @PathVariable(value = "id") Long id);
+
     @GetMapping("/{sort}/{sortBy}/{page}")
     public ResponseEntity<Object> findByParam(
             @RequestHeader("Authorization") String token,
