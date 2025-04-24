@@ -3,6 +3,7 @@ package com.juaracoding.kepulthymeleaf.httpservice;
 import com.juaracoding.kepulthymeleaf.config.FeignClientConfig;
 import com.juaracoding.kepulthymeleaf.dto.validation.ValProductDTO;
 import com.juaracoding.kepulthymeleaf.dto.validation.ValTransactionDTO;
+import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,13 @@ public interface TransactionService {
             @RequestParam(value = "size") Integer size,
             @RequestParam(value = "column") String column,
             @RequestParam(value = "value") String value);
+
+    @GetMapping("/pdf")
+    public Response downloadPdf(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(value = "column") String column,
+            @RequestParam(value = "value") String value
+    );
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@RequestHeader("Authorization") String token,

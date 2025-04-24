@@ -11,8 +11,15 @@ import com.juaracoding.kepulthymeleaf.httpservice.ProductService;
 import com.juaracoding.kepulthymeleaf.httpservice.TransactionService;
 import com.juaracoding.kepulthymeleaf.utils.ConstantPage;
 import com.juaracoding.kepulthymeleaf.utils.GlobalFunction;
+import feign.Response;
 import jakarta.validation.Valid;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +27,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -184,6 +192,36 @@ public class TransactionController {
             return "redirect:/transaction";
         }
         return ConstantPage.TRANSACTION_MAIN_PAGE;
+    }
+
+    @GetMapping("/pdf")
+    public ResponseEntity<Resource> downloadPdf(
+            Model model,
+            @RequestParam(value = "column") String column,
+            @RequestParam(value = "value") String value,
+            WebRequest webRequest
+    ){
+
+        ByteArrayResource resource =null;
+        Response response = null;
+        String jwt = GlobalFunction.tokenCheck(model, webRequest);
+        String fileName = "";
+        if(jwt.equals(ConstantPage.LOGIN_PAGE)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resource);
+        }
+        try{
+            response = transactionService.downloadPdf(jwt,column,value);
+            fileName = response.headers().get("Content-Disposition").toString();
+            System.out.println("Value Content-Disposition Server : "+fileName);
+            InputStream inputStream = response.body().asInputStream();
+            resource = new ByteArrayResource(IOUtils.toByteArray(inputStream));
+        }catch (Exception e){
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Disposition",fileName.substring(0,fileName.length()-1));
+
+        return ResponseEntity.ok().headers(headers).contentType(MediaType.parseMediaType("application/pdf")).
+                body(resource);
     }
 
     @GetMapping("/d/{id}")
