@@ -1,0 +1,126 @@
+<form  th:action="@{/user/e/{id} (id=${data.id})}"
+	   th:object = "${data}" method="POST" id="editTransaction">
+	<input type="hidden" value="50c9a8c2b1cb45799d8f0db5f8449c65" /><!-- id form -->
+	<div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
+		<p th:each="err : ${#fields.errors('global')}" th:text="${err}"  class="error"/>
+	</div>
+	<div class ="form-group">
+		<label> Id User </label>
+		<input type="text" th:value="${data.id}" readonly /><!-- id form -->
+
+	</div>
+	<div class ="form-group">
+		<label> Username </label>
+		<input
+				type = "text"
+				name = "username"
+				th:field = "*{username}"
+				class = "form-control"
+				placeholder="Masukkan Username"
+		/>
+		<ul>
+			<li th:each="err : ${#fields.errors('username')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+	<div class ="form-group">
+		<label> Password </label>
+		<input
+				type = "password"
+				name = "password"
+				th:field = "*{password}"
+				class = "form-control"
+				placeholder="Masukkan Password"
+		/>
+		<ul>
+			<li th:each="err : ${#fields.errors('password')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+	<div class ="form-group">
+		<label> Email </label>
+		<input
+				type = "email"
+				name = "email"
+				th:field = "*{email}"
+				class = "form-control"
+				placeholder="Masukkan Email"
+		/>
+		<ul>
+			<li th:each="err : ${#fields.errors('email')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+	<div class ="form-group">
+		<label> Nama </label>
+		<input
+				type = "text"
+				name = "nama"
+				th:field = "*{nama}"
+				class = "form-control"
+				placeholder="Masukkan Nama"
+		/>
+		<ul>
+			<li th:each="err : ${#fields.errors('nama')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+
+	<div class ="form-group">
+		<label> Akses </label>
+		<select name = "akses" th:field = "*{akses}" class = "form-control">
+			<option value="Admin">Admin</option>
+			<option value="Member">Member</option>
+
+		</select>
+		<ul>
+			<li th:each="err : ${#fields.errors('akses')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+
+	<div class ="form-group">
+		<label> Is Registered </label>
+		<select name = "registered" th:field = "*{registered}" class = "form-control">
+			<option value="True">True</option>
+			<option value="False">False</option>
+
+		</select>
+		<ul>
+			<li th:each="err : ${#fields.errors('registered')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+
+
+	<div class = "modal-footer">
+		<button type="submit" class = "btn btn-primary">
+			Submit
+		</button>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	</div>
+</form>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    $("#editTransaction").submit(function(event) {
+          event.preventDefault(); //prevent default action
+          let post_url = $(this).attr("action"); //get form action url
+          let request_method = $(this).attr("method"); //get form GET/POST method
+          let form_data = $(this).serialize(); //Encode form elements for submission
+          $.ajax({
+              url: post_url,
+              type: request_method,
+              data: form_data
+            }).done(function(response) { //
+            let pattern = /50c9a8c2b1cb45799d8f0db5f8449c65/i;
+			let result = response.match(pattern);
+            if(result)
+            {
+				$("#server-results-edit").html(response);
+            }
+            else
+            {
+				$('#add1').modal('hide');
+				confirm("DATA BERHASIL DIUBAH!!");
+				window.location = "/user";// ini refresh page nya
+            }
+            });
+        });
+
+/*]]>*/
+</script>

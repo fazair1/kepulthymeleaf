@@ -4,8 +4,8 @@
     <table class="table table-bordered text-center">
         <thead class="table-light">
         <tr>
-            <th th:each="map:${listKolom}">
-                <a th:if="${map.key != 'username' and map.key != 'email' and map.key != 'nama'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+''+'&value='+${value}+'&size='+${sizePerPage}}"
+            <th th:each="map:${listKolom}" th:if="${map.key != 'alamat' and map.key != 'noHp' and map.key != 'tanggalLahir'}">
+                <a th:if="${map.key != 'username' and map.key != 'email' and map.key != 'nama' and map.key != 'alamat' and map.key != 'noHp' and map.key != 'tanggalLahir'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+''+'&value='+${value}+'&size='+${sizePerPage}}"
                    class="text-dark text-decoration-none">
                     [[${map.value}]]
                 </a>
@@ -29,8 +29,8 @@
         </thead>
         <tbody>
         <tr th:each="entry:${listContent}">
-            <td th:each="f:${listHelper}">
-                <div th:if="${f != 'akses'}" th:text="${entry.get(f)}"></div>
+            <td th:each="f:${listHelper}" th:if="${f != 'alamat' and f != 'noHp' and f != 'tanggalLahir'}">
+                <div th:if="${f != 'akses' and f != 'alamat' and f != 'noHp' and f != 'tanggalLahir'}" th:text="${entry.get(f)}"></div>
                 <div th:if="${f == 'akses'}" th:text="${entry.get(f).get('nama')}"></div>
             </td>
             <td>
