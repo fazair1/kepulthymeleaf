@@ -1,8 +1,8 @@
 package com.juaracoding.kepulthymeleaf.dto.relation;
 
-public class RelProductCategoryDTO {
-
+public class RelProductDTO {
     private Long id;
+
     private String nama;
 
     public String getNama() {
@@ -20,5 +20,4 @@ public class RelProductCategoryDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
 }

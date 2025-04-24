@@ -16,4 +16,6 @@ public class ConstantPage {
     public static final String SUCCESS_MESSAGE = "/form-success";
     public static final String DATA_TABLE_MODALS = "global/data-table-form";
 
+    public static final String PRODUCT_EDIT_PAGE = "/product/edit";
+    public static final String PRODUCT_CATEGORY_EDIT_PAGE = "/productcategory/edit";
 }

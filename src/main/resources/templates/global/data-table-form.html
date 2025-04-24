@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+<div th:replace="~{fragment/data/filter-data::filter-data-master}"></div>
+<div th:replace="~{fragment/data/table-data::table-master}"></div>
+<div th:replace="~{fragment/data/pagination-data::paging-data}"></div>
+<div th:if="${pesan != null}" class="error-box error-danger" >
+    <p style="text-align: center;color: green;font-weight: bolder;font-size: 2.5rem" th:utext="${pesan}" />
+</div>
+</body>
+</html>
