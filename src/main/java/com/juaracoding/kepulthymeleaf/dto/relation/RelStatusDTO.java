@@ -1,8 +1,10 @@
 package com.juaracoding.kepulthymeleaf.dto.relation;
 
-public class RelProductDTO {
+public class RelStatusDTO {
 
     private Long id;
+
+    private String nama;
 
     public Long getId() {
         return id;
@@ -12,4 +14,11 @@ public class RelProductDTO {
         this.id = id;
     }
 
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
 }
