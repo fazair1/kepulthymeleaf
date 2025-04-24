@@ -16,7 +16,7 @@
 
 	<div class ="form-group">
 		<label> Status Transaksi </label>
-		<select name = "namaStatus" th:field = "*{namaStatus}" class = "form-control">
+		<select name = "namaStatus" th:field = "*{namaStatus}" class = "form-control" th:attr="readonly=${AKSES != 'Admin'}">>
 			<option value="Waiting for Approval">Waiting for Approval</option>
 			<option value="Approved">Approved</option>
 

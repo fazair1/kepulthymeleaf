@@ -44,7 +44,7 @@
                 </div>
             </td>
             <td>
-                <button class="btn btn-primary"
+                <button th:if="${entry.get('namaStatus') != 'Approved'}" class="btn btn-primary"
                         th:data-title="'Edit'"
                         th:data-server="'#server-results-edit'"
                         onclick="funcModalsHandler(event)"
@@ -53,8 +53,8 @@
                     Edit
                 </button>
             </td>
-            <td>
-                <button class="btn btn-danger"
+            <td th:if="${AKSES == 'Admin'}">
+                <button  class="btn btn-danger"
                         onclick="getRequestHandler(event)"
                         th:data-title="${pathServer}"
                         th:data-url="'/'+${pathServer}+'/d/'+${entry.get('id')}">
