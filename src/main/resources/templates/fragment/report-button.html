@@ -14,17 +14,12 @@
 
         <!--                class="btn btn-success me-2"-->
 <!--                data-bs-toggle="modal" data-bs-target="#add1">-->
-            Create Product
+            Add
         </button>
 
         <!-- Export PDF -->
         <a th:href="@{'/'+${pathServer}+'/pdf?column='+${columnName}+'&value='+${value}}">
             <button class="btn btn-outline-danger me-2" type="button">Export PDF</button>
-        </a>
-
-        <!-- Export Excel -->
-        <a th:href="@{'/'+${pathServer}+'/excel?column='+${columnName}+'&value='+${value}}">
-            <button class="btn btn-outline-success" type="button">Export Excel</button>
         </a>
     </div>
 </div>
