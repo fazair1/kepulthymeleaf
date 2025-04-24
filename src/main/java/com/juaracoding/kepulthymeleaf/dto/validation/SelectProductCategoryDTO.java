@@ -3,11 +3,15 @@ package com.juaracoding.kepulthymeleaf.dto.validation;
 import com.juaracoding.kepulthymeleaf.utils.ConstantsMessage;
 import jakarta.validation.constraints.Pattern;
 
-public class SelectCategoryDTO {
+import java.util.List;
+
+public class SelectProductCategoryDTO {
     private Long id;
 
     @Pattern(regexp = "^[\\w\\s]{3,50}$", message = ConstantsMessage.VAL_PRODUCT_CATEGORY_NAMA)
     private String nama;
+
+//    private List<String> ltProductCategory;
 
     public Long getId() {
         return id;
@@ -24,4 +28,10 @@ public class SelectCategoryDTO {
     public void setNama(String nama) {
         this.nama = nama;
     }
+
+//    public List<String> getLtProductCategory() {
+//        return ltProductCategory;
+//    }
+
+
 }

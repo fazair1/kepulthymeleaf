@@ -51,4 +51,7 @@ public interface ProductCategoryService {
             @RequestParam(value = "column") String column,
             @RequestParam(value = "value") String value
     );
+
+    @GetMapping("/all")
+    public ResponseEntity<Object> allMenu(@RequestHeader("Authorization") String token);
 }

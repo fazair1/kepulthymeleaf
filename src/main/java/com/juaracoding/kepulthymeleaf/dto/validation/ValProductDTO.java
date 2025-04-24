@@ -17,8 +17,27 @@ public class ValProductDTO {
     @Pattern(regexp = "^[\\w\\s]{3,100}$", message = ConstantsMessage.VAL_PRODUCT_DESKRIPSI)
     private String deskripsi;
 
-    @NotNull(message = ConstantsMessage.VAL_PRODUCT_CATEGORY)
-    private RelProductCategoryDTO productCategory;
+    private List<RelProductCategoryDTO> ltProductCategory;
+    public List<RelProductCategoryDTO> getLtProductCategory() {
+        return ltProductCategory;
+    }
+
+    public void setLtProductCategory(List<RelProductCategoryDTO> ltProductCategory) {
+        this.ltProductCategory = ltProductCategory;
+    }
+
+
+//    @NotNull(message = ConstantsMessage.VAL_PRODUCT_CATEGORY)
+//    private RelProductCategoryDTO productCategory;
+//    public List<RelProductCategoryDTO> getLtProductCategory() {
+//        return ltProductCategory;
+//    }
+//
+//    public void setLtProductCategory(List<RelProductCategoryDTO> ltProductCategory) {
+//        this.ltProductCategory = ltProductCategory;
+//    }
+//
+//    private List<RelProductCategoryDTO> ltProductCategory;
 
     public String getDeskripsi() {
         return deskripsi;
@@ -36,11 +55,11 @@ public class ValProductDTO {
         this.nama = nama;
     }
 
-    public RelProductCategoryDTO getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(RelProductCategoryDTO productCategory) {
-        this.productCategory = productCategory;
-    }
+//    public RelProductCategoryDTO getProductCategory() {
+//        return productCategory;
+//    }
+//
+//    public void setProductCategory(RelProductCategoryDTO productCategory) {
+//        this.productCategory = productCategory;
+//    }
 }
