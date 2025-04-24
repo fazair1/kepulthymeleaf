@@ -13,7 +13,7 @@ public interface ProductService {
     public ResponseEntity<Object> findAll(@RequestHeader("Authorization") String token);
 
     @GetMapping("/all")
-    public ResponseEntity<Object> allMenu(@RequestHeader("Authorization") String token);
+    public ResponseEntity<Object> allProduct(@RequestHeader("Authorization") String token);
 
     @GetMapping("/{sort}/{sortBy}/{page}")
     public ResponseEntity<Object> findByParam(

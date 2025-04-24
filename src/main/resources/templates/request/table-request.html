@@ -5,16 +5,30 @@
         <thead class="table-light">
         <tr>
             <th th:each="map:${listKolom}">
-                <a th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+${columnName}+'&value='+${value}+'&size='+${sizePerPage}}"
+                <a th:if="${map.key != 'namaDivisi' and map.key != 'namaAdmin' and map.key != 'namaStatus'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+''+'&value='+${value}+'&size='+${sizePerPage}}"
                    class="text-dark text-decoration-none">
                     [[${map.value}]]
                 </a>
+                <a th:if="${map.key == 'namaDivisi'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+'divisi'+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+                <a th:if="${map.key == 'namaAdmin'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+'admin'+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+                <a th:if="${map.key == 'namaStatus'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+'status'+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+
             </th>
+
             <th colspan="2">Action</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="entry:${transactionList}">
+        <tr th:each="entry:${listContent}">
             <td th:each="f:${listHelper}">
                 <div th:if="${f != 'listProduct'}" th:text="${entry.get(f)}"></div>
                 <div th:if="${f == 'listProduct'}" >

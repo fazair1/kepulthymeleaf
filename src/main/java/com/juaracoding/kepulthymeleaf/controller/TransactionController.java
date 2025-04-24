@@ -17,10 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
@@ -60,12 +57,9 @@ public class TransactionController {
             GlobalFunction.setDataMainPage(model,webRequest,mResponse,
                     "transaction",filterColumn);
 //            System.out.println("Body Response : "+response.getBody());
-            Map<String,Object> data = (Map<String, Object>) mResponse.get("data");//element yang di dalam paging
-            List<RepTransactionDTO> repTransactionDTOList = (List<RepTransactionDTO>) data.get("content");//element yang di dalam paging
-            model.addAttribute("transactionList",repTransactionDTOList);
 
         }catch (Exception e){
-            return "redirect:/er";
+            return "redirect:/transaction";
         }
         return ConstantPage.TRANSACTION_MAIN_PAGE;
     }
@@ -163,5 +157,54 @@ public class TransactionController {
         return ConstantPage.TRANSACTION_ADD_PAGE;
     }
 
+    @GetMapping("/{sort}/{sortBy}/{page}")
+    public String findByParam(
+            Model model,
+            @PathVariable(value = "sort") String sort,
+            @PathVariable(value = "sortBy") String sortBy,
+            @PathVariable(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "column") String column,
+            @RequestParam(value = "value") String value,
+            WebRequest webRequest){
+        ResponseEntity<Object> response = null;
+        String jwt = GlobalFunction.tokenCheck(model, webRequest);
+        page = page > 0 ?(page-1):0;
+        if(jwt.equals(ConstantPage.LOGIN_PAGE)){
+            return jwt;
+        }
+
+        try{
+            response = transactionService.findByParam(jwt,sort,sortBy,page,size,column,value);
+            Map<String,Object> mResponse = (Map<String, Object>) response.getBody();
+            GlobalFunction.setDataMainPage(model,webRequest,mResponse,
+                    "transaction",filterColumn);
+//            System.out.println("Body Response : "+response.getBody());
+        }catch (Exception e){
+            return "redirect:/transaction";
+        }
+        return ConstantPage.TRANSACTION_MAIN_PAGE;
+    }
+
+    @GetMapping("/d/{id}")
+    public String delete(
+            Model model,
+            @PathVariable(value = "id") Long id,
+            WebRequest webRequest){
+
+        ResponseEntity<Object> response = null;
+        String jwt = GlobalFunction.tokenCheck(model, webRequest);
+        if(jwt.equals(ConstantPage.LOGIN_PAGE)){
+            return jwt;
+        }
+
+        try{
+            response = transactionService.delete(jwt,id);
+        }catch (Exception e){
+            return ConstantPage.TRANSACTION_MAIN_PAGE;
+        }
+
+        return "redirect:/transaction";
+    }
 
 }
