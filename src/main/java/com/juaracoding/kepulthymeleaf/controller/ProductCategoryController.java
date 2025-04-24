@@ -40,7 +40,7 @@ public class ProductCategoryController {
 
     public ProductCategoryController() {
         filterColumn.put("nama","Nama");
-//        filterColumn.put("deskripsi","Deskripsi");
+
     }
 
     @GetMapping
@@ -134,14 +134,14 @@ public class ProductCategoryController {
             mResponse = (Map<String, Object>) response.getBody();
         }catch (Exception e){
             GlobalFunction.setDataMainPage(model,webRequest,mResponse,
-                    "group-menu",filterColumn);
+                    "product-category",filterColumn);
             model.addAttribute("idComp", idComp);
             model.addAttribute("descComp",descComp);
             return ConstantPage.DATA_TABLE_MODALS;
         }
 
         GlobalFunction.setDataMainPage(model,webRequest,mResponse,
-                "group-menu",filterColumn);
+                "product-category",filterColumn);
         model.addAttribute("idComp", idComp);
         model.addAttribute("descComp",descComp);
         return ConstantPage.DATA_TABLE_MODALS;
@@ -167,7 +167,7 @@ public class ProductCategoryController {
             response = productCategoryService.findByParam(jwt,sort,sortBy,page,size,column,value);
             Map<String,Object> mResponse = (Map<String, Object>) response.getBody();
             GlobalFunction.setDataMainPage(model,webRequest,mResponse,
-                    "group-menu",filterColumn);
+                    "product-category",filterColumn);
 //            System.out.println("Body Response : "+response.getBody());
         }catch (Exception e){
             return "redirect:/er";
@@ -246,7 +246,7 @@ public class ProductCategoryController {
             return ConstantPage.PRODUCT_CATEGORY_MAIN_PAGE;
         }
 
-        return "redirect:/group-menu";
+        return "redirect:/product-category";
     }
 
     @GetMapping("/pdf")

@@ -1,8 +1,11 @@
 package com.juaracoding.kepulthymeleaf.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.juaracoding.kepulthymeleaf.dto.relation.RelProductCategoryDTO;
+import com.juaracoding.kepulthymeleaf.dto.relation.RelProductDTO;
+import com.juaracoding.kepulthymeleaf.dto.relation.RelStatusDTO;
 import com.juaracoding.kepulthymeleaf.dto.response.RespProductDTO;
-import com.juaracoding.kepulthymeleaf.dto.validation.ValProductDTO;
+import com.juaracoding.kepulthymeleaf.dto.validation.*;
 import com.juaracoding.kepulthymeleaf.httpservice.ProductService;
 import com.juaracoding.kepulthymeleaf.utils.ConstantPage;
 import com.juaracoding.kepulthymeleaf.utils.GlobalFunction;
@@ -24,9 +27,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 @Controller
 @RequestMapping("product")
@@ -91,6 +92,47 @@ public class ProductController {
         }
         return ConstantPage.SUCCESS_MESSAGE;
     }
+//    private ValProductDTO convertToValProductCategoryDTO(SelectCategoryDTO selectCategoryDTO){
+//        ValProductDTO valProductDTO = new ValProductDTO();
+//        List<RelProductDTO> relProductDTOList = new ArrayList<>();
+//        RelProductDTO relProductDTO = new RelProductDTO();
+
+//        for (String s:
+//                selectCategoryDTO.getLtProduct()) {
+//            relProductDTO = new RelProductDTO();
+//            relProductDTO.setId(Long.parseLong(s));
+//            relProductDTOList.add(relProductDTO);
+//        }
+//        RelProductCategoryDTO relProductCategoryDTO = new RelProductCategoryDTO();
+//
+//        if (selectCategoryDTO.getNama().equals("Approved")) {
+//            relProductCategoryDTO.setNama(selectCategoryDTO.getNama());
+//            relProductCategoryDTO.setId(2L);
+//            valProductDTO.setProductCategory(relProductCategoryDTO);
+//
+//        } else if (selectCategoryDTO.getNama().equals("Waiting for Approval")) {
+//            relStatusDTO.setNama(selectCategoryDTO.getNamaStatus());
+//            relStatusDTO.setId(1L);
+//            valTransactionDTO.setStatus(relStatusDTO);
+//        }
+//        valTransactionDTO.setLtProduct(relProductDTOList);
+//        return valTransactionDTO;
+//    }
+
+    /** fungsi untuk mengambil data web yang sudah di set sebelumnya di function openModalAdd , agar tidak menghubungi server lagi meminta data product yang sama */
+    private void setDataTempAdd(Model model , WebRequest webRequest){
+        Long data1[] = (Long[]) webRequest.getAttribute("data1",1);//menampung data id dari all product
+        String data2[] = (String[]) webRequest.getAttribute("data2",1);//menampung data nama dari all product
+        List<SelectProductDTO> listAllProduct = new ArrayList<>();
+        SelectProductDTO selectProductDTO = null;
+        for(int i=0;i<data1.length;i++){
+            selectProductDTO = new SelectProductDTO();
+            selectProductDTO.setId(data1[i]);
+            selectProductDTO.setNama(data2[i]);
+            listAllProduct.add(selectProductDTO);
+        }
+        model.addAttribute("x",listAllProduct);
+    }
 
     @GetMapping("/a")
     public String openModalsAdd(
@@ -101,9 +143,43 @@ public class ProductController {
         if(jwt.equals(ConstantPage.LOGIN_PAGE)){
             return jwt;
         }
-        model.addAttribute("data",new RespProductDTO());
-        return ConstantPage.PRODUCT_ADD_PAGE;
+        try{
+            response = productService.allProduct(jwt);
+        }catch (Exception e){
+        }
+
+        Map<String,Object> map = (Map<String, Object>) response.getBody();
+        List<Map<String,Object>> ltProduct = (List<Map<String,Object>>) map.get("data");
+        int ltProductSize = ltProduct.size();
+        Long[] data1 = new Long[ltProductSize];
+        String[] data2 = new String[ltProductSize];
+        int i=0;
+        for (Map<String,Object> map1 : ltProduct) {
+            data1[i] = Long.parseLong(map1.get("id").toString());
+            data2[i] = (String) map1.get("nama");
+            i++;
+        }
+        webRequest.setAttribute("data1",data1,1);
+        webRequest.setAttribute("data2",data2,1);
+
+        model.addAttribute("data",new SelectTransactionDTO());
+        model.addAttribute("x",ltProduct);
+
+        return ConstantPage.TRANSACTION_ADD_PAGE;
     }
+
+//    @GetMapping("/a")
+//    public String openModalsAdd(
+//            Model model,
+//            WebRequest webRequest){
+//        ResponseEntity<Object> response = null;
+//        String jwt = GlobalFunction.tokenCheck(model, webRequest);
+//        if(jwt.equals(ConstantPage.LOGIN_PAGE)){
+//            return jwt;
+//        }
+//        model.addAttribute("data",new RespProductDTO());
+//        return ConstantPage.PRODUCT_ADD_PAGE;
+//    }
 
     @GetMapping("/e/{id}")
     public String openModalsEdit(

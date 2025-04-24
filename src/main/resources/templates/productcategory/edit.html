@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+<form  th:action="@{/product-category/e/{id} (id=${data.id})}"
+	   th:object = "${data}" method="POST" id="editGroupMenu">
+	<input type="hidden" value="50c9a8c2b1cb45799d8f0db5f8449103c" /><!-- id form -->
+	<div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
+		<p th:each="err : ${#fields.errors('global')}" th:text="${err}"  class="error"/>
+	</div>
+	<div class ="form-group">
+		<label> Nama Category </label>
+		<input
+				type = "text"
+				name = "nama"
+				th:field = "*{nama}"
+				class = "form-control"
+				placeholder="Masukkan Nama Category"
+		/>
+		<ul>
+			<li th:each="err : ${#fields.errors('nama')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+
+
+	<div class = "modal-footer">
+		<button type="submit" class = "btn btn-primary">
+			Submit
+		</button>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	</div>
+</form>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+        $("#editGroupMenu").submit(function(event) {
+              event.preventDefault(); //prevent default action
+              let post_url = $(this).attr("action"); //get form action url
+              let request_method = $(this).attr("method"); //get form GET/POST method
+              let form_data = $(this).serialize(); //Encode form elements for submission
+              $.ajax({
+                  url: post_url,
+                  type: request_method,
+                  data: form_data
+                }).done(function(response) { //
+                let pattern = /50c9a8c2b1cb45799d8f0db5f8449103c/i;
+                let result = response.match(pattern);
+                if(result)
+                {
+                    $("#server-results-edit").html(response);
+                }
+                else
+                {
+                    $('#add1').modal('hide');
+                    confirm("DATA BERHASIL DIUBAH");
+                    window.location = "/product-category";// ini refresh page nya
+                }
+                });
+            });
+
+    /*]]>*/
+</script>
+</body>
+</html>
