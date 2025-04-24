@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="main-table" class="table-responsive">
+    <table class="table table-bordered text-center">
+        <thead class="table-light">
+        <tr>
+            <th th:each="map:${listKolom}">
+                <a th:if="${map.key != 'username' and map.key != 'email' and map.key != 'nama'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+''+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+                <a th:if="${map.key == 'username'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+'username'+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+                <a th:if="${map.key == 'email'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+'email'+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+                <a th:if="${map.key == 'nama'}" th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+'nama'+'&value='+${value}+'&size='+${sizePerPage}}"
+                   class="text-dark text-decoration-none">
+                    [[${map.value}]]
+                </a>
+
+            </th>
+
+            <th colspan="2">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry:${listContent}">
+            <td th:each="f:${listHelper}">
+                <div th:if="${f != 'akses'}" th:text="${entry.get(f)}"></div>
+                <div th:if="${f == 'akses'}" th:text="${entry.get(f).get('nama')}"></div>
+            </td>
+            <td>
+                <button class="btn btn-primary"
+                        th:data-title="'Edit'"
+                        th:data-server="'#server-results-edit'"
+                        onclick="funcModalsHandler(event)"
+                        th:data-url="'/'+${pathServer}+'/e/'+${entry.get('id')}"
+                        data-toggle="modal" data-target="#edit1">
+                    Edit Product
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-danger"
+                        onclick="getRequestHandler(event)"
+                        th:data-title="${pathServer}"
+                        th:data-url="'/'+${pathServer}+'/d/'+${entry.get('id')}">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</html>

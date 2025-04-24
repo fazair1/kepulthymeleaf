@@ -42,11 +42,5 @@ public class DefaultController {
 //        model.addAttribute("MENU_NAVBAR",webRequest.getAttribute("MENU_NAVBAR",1));
         return "request/main";
     }
-    @GetMapping("/user")
-    public String user(Model model, WebRequest webRequest) {
-//        model.addAttribute("USR_NAME",webRequest.getAttribute("USR_NAME",1));
-//        model.addAttribute("MENU_NAVBAR",webRequest.getAttribute("MENU_NAVBAR",1));
-        return "user/main";
-    }
 
 }
