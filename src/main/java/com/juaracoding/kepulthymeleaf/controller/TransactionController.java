@@ -208,13 +208,22 @@ public class TransactionController {
         List<Map<String, Object>> listMapProduct = (List<Map<String, Object>>) mapData.get("ltProduct");
 
         RepTransactionDTO repTransactionDTO = new RepTransactionDTO();
-        Map<String,Object> mapTransaction = new HashMap<>();
+        Set<Integer> productSelected = new HashSet<>();
+
+        for (Map<String,Object> product: listMapDataProduct ) {
+            for(Map<String,Object> p:listMapProduct){
+                if((Integer)product.get("id")==(Integer) p.get("id")) {
+                    productSelected.add(((Integer) product.get("id")));
+                }
+            }
+        }
 
         repTransactionDTO.setId(id);
         repTransactionDTO.setNamaStatus(status);
         repTransactionDTO.setLtProduct(listMapProduct);
         model.addAttribute("data", repTransactionDTO);
         model.addAttribute("listMapDataProduct", listMapDataProduct);
+        model.addAttribute("productSelected", productSelected);
 
 //        return "/request/test";
         return ConstantPage.TRANSACTION_EDIT_PAGE;
