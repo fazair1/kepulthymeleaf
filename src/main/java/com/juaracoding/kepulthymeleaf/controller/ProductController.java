@@ -230,7 +230,7 @@ public class ProductController {
             return ConstantPage.PRODUCT_MAIN_PAGE;
         }
 
-        return "redirect:/akses";
+        return "redirect:/product";
     }
 
     /** fungsi untuk mencocokkan data menu dengan data yang sudah ada di table di database */
