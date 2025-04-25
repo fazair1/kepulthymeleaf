@@ -101,15 +101,10 @@ public class ProductController {
         ValProductDTO valProductDTO = new ValProductDTO();
         valProductDTO.setNama(selectProductDTO.getNama());
         valProductDTO.setDeskripsi(selectProductDTO.getDeskripsi());
-        List<RelProductCategoryDTO> relProductCategoryDTOList = new ArrayList<>();
         RelProductCategoryDTO relProductCategoryDTO = new RelProductCategoryDTO();
-        for (String s:
-                selectProductDTO.getLtProductCategory()) {
-            relProductCategoryDTO = new RelProductCategoryDTO();
-            relProductCategoryDTO.setId(Long.parseLong(s));
-            relProductCategoryDTOList.add(relProductCategoryDTO);
-        }
-        valProductDTO.setLtProductCategory(relProductCategoryDTOList);
+        relProductCategoryDTO.setId(Long.parseLong(selectProductDTO.getProductCategory()));
+        valProductDTO.setProductCategory(relProductCategoryDTO);
+
         return valProductDTO;
     }
 
@@ -124,17 +119,19 @@ public class ProductController {
         }
 
         try{
-            response = productCategoryService.allMenu(jwt);
+            response = productCategoryService.findAll(jwt);
         }catch (Exception e){
         }
 
         Map<String,Object> map = (Map<String, Object>) response.getBody();
-        List<Map<String,Object>> ltMenu = (List<Map<String,Object>>) map.get("data");
-        int ltMenuSize = ltMenu.size();
-        Long[] data1 = new Long[ltMenuSize];
-        String[] data2 = new String[ltMenuSize];
+        Map<String,Object> mapdata = (Map<String, Object>) map.get("data");
+
+        List<Map<String,Object>> ltProductCategory = (List<Map<String,Object>>) mapdata.get("content");
+        int ltProductCategorySize = ltProductCategory.size();
+        Long[] data1 = new Long[ltProductCategorySize];
+        String[] data2 = new String[ltProductCategorySize];
         int i=0;
-        for (Map<String,Object> map1 : ltMenu) {
+        for (Map<String,Object> map1 : ltProductCategory) {
             data1[i] = Long.parseLong(map1.get("id").toString());
             data2[i] = (String) map1.get("nama");
             i++;
@@ -142,8 +139,8 @@ public class ProductController {
         webRequest.setAttribute("data1",data1,1);
         webRequest.setAttribute("data2",data2,1);
 
-        model.addAttribute("data",new RespProductDTO());
-        model.addAttribute("x",ltMenu);
+        model.addAttribute("data",new SelectProductDTO());
+        model.addAttribute("x",ltProductCategory);
         return ConstantPage.PRODUCT_ADD_PAGE;
     }
 
@@ -160,7 +157,7 @@ public class ProductController {
         }
         try{
             response = productService.findById(jwt,id);
-            responseMenu = productCategoryService.allMenu(jwt);
+            responseMenu = productCategoryService.findAll(jwt);
         }catch (Exception e){
 
         }

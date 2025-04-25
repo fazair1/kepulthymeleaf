@@ -39,7 +39,7 @@
 
 	<div class ="form-group">
 		<label> Category List </label>
-		<select id="ltProductCategory" name="ltProductCategory" th:field="*{ltProductCategory}" size="10" multiple="multiple">
+		<select id="productCategory" name="productCategory" th:field="*{productCategory}" size="10" multiple="multiple">
 			<option th:each="productCategoryList: ${x}" th:value="${productCategoryList.id}" th:text="${productCategoryList.nama}"></option>
 		</select>
 	</div>
