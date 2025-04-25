@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <body>
-<form  th:action="@{/product-category/e/{id} (id=${data.id})}"
+<form  th:action="@{/product/e/{id} (id=${data.id})}"
 	   th:object = "${data}" method="POST" id="editGroupMenu">
 	<input type="hidden" value="50c9a8c2b1cb45799d8f0db5f8449103c" /><!-- id form -->
 	<div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
@@ -36,6 +36,13 @@
 		</ul>
 	</div>
 
+	<div class ="form-group">
+		<label> Category List </label>
+		<select id="productCategory" name="productCategory" th:field="*{productCategory}" size="10">
+			<option th:each="productCategoryList: ${x}" th:value="${productCategoryList.id}" th:text="${productCategoryList.nama}"></option>
+		</select>
+	</div>
+
 	<div class = "modal-footer">
 		<button type="submit" class = "btn btn-primary">
 			Submit
@@ -66,7 +73,7 @@
                 {
                     $('#add1').modal('hide');
                     confirm("DATA BERHASIL DIUBAH");
-                    window.location = "/product-category";// ini refresh page nya
+                    window.location = "/product";// ini refresh page nya
                 }
                 });
             });

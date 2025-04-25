@@ -15,7 +15,7 @@ public class SelectProductDTO {
     @Pattern(regexp = "^[\\w\\s]{5,100}$",message = "Alfanumerik dengan spasi min 5 maks 100 karakter")
     private String deskripsi;
 
-    private String productCategory;
+    private Long productCategory;
 
     public Long getId() {
         return id;
@@ -37,11 +37,11 @@ public class SelectProductDTO {
         return deskripsi;
     }
 
-    public String getProductCategory() {
+    public Long getProductCategory() {
         return productCategory;
     }
 
-    public void setProductCategory(String productCategory) {
+    public void setProductCategory(Long productCategory) {
         this.productCategory = productCategory;
     }
 

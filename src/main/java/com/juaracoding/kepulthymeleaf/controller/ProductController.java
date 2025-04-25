@@ -102,7 +102,7 @@ public class ProductController {
         valProductDTO.setNama(selectProductDTO.getNama());
         valProductDTO.setDeskripsi(selectProductDTO.getDeskripsi());
         RelProductCategoryDTO relProductCategoryDTO = new RelProductCategoryDTO();
-        relProductCategoryDTO.setId(Long.parseLong(selectProductDTO.getProductCategory()));
+        relProductCategoryDTO.setId(selectProductDTO.getProductCategory());
         valProductDTO.setProductCategory(relProductCategoryDTO);
 
         return valProductDTO;
@@ -150,21 +150,44 @@ public class ProductController {
             @PathVariable(value = "id") Long id,
             WebRequest webRequest){
         ResponseEntity<Object> response = null;
-        ResponseEntity<Object> responseMenu = null;
+        ResponseEntity<Object> responseProductCategory = null;
         String jwt = GlobalFunction.tokenCheck(model, webRequest);
         if(jwt.equals(ConstantPage.LOGIN_PAGE)){
             return jwt;
         }
         try{
             response = productService.findById(jwt,id);
-            responseMenu = productCategoryService.findAll(jwt);
+            responseProductCategory = productCategoryService.findAll(jwt);
         }catch (Exception e){
 
         }
-        /** cara untuk menyimpan data di session, kurang lebih sama untuk CSR data nya disimpan di dalam storage di web browser
-         *  Notes : table session tidak dapat menyimpan data berbentuk object serialize, sehingga nanti dirangkai menjadi array 1 atau 2 dimensi tergantung kebuuthan
-         */
-        setDataMenuToEdit(response,responseMenu,model,webRequest);
+        Map<String,Object> map = (Map<String, Object>) response.getBody();
+        Map<String,Object> mapData = (Map<String, Object>) map.get("data");
+        Map<String,Object> mapDataProductCategory = (Map<String, Object>) responseProductCategory.getBody();
+        Map<String,Object> mapContentProductCategory = (Map<String, Object>) mapDataProductCategory.get("data");
+        List<Map<String,Object>> listMapDataProductCategory = (List<Map<String, Object>>) mapContentProductCategory.get("content");
+
+        SelectProductDTO selectProductDTO = new SelectProductDTO();
+        selectProductDTO.setId(((Integer) mapData.get("id")).longValue());
+        selectProductDTO.setNama((String) mapData.get("nama"));
+        selectProductDTO.setDeskripsi((String) mapData.get("deskripsi"));
+
+        Map<String,Object> mapProductCategory = (Map<String, Object>) mapData.get("productCategory");
+        selectProductDTO.setProductCategory(Long.parseLong(String.valueOf(mapProductCategory.get("id"))) );
+
+        int productCategorySelected = 0;
+
+        for (Map<String,Object> productCategory: listMapDataProductCategory ) {
+            if((Integer)productCategory.get("id")==(Integer) mapProductCategory.get("id")) {
+                productCategorySelected = (Integer) productCategory.get("id");
+            }
+
+        }
+
+        model.addAttribute("data",selectProductDTO);
+        model.addAttribute("x", listMapDataProductCategory);
+        model.addAttribute("productCategorySelected", productCategorySelected);
+
         return ConstantPage.PRODUCT_EDIT_PAGE;
     }
 
@@ -191,7 +214,7 @@ public class ProductController {
         selectProductDTO.setId(id);
         if(bindingResult.hasErrors()){
             model.addAttribute("data",selectProductDTO);
-            setDataTempEdit(model,webRequest);
+//            setDataTempEdit(model,webRequest);
             return ConstantPage.PRODUCT_EDIT_PAGE;
         }
 
