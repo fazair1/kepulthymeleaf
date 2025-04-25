@@ -78,7 +78,7 @@ public class ProductController {
         if(bindingResult.hasErrors()){
             model.addAttribute("data",selectProductDTO);
             setDataTempAdd(model,webRequest);
-            return ConstantPage.PRODUCT_MAIN_PAGE;
+            return ConstantPage.PRODUCT_ADD_PAGE;
         }
 
         ResponseEntity<Object> response = null;

@@ -40,7 +40,7 @@
                         onclick="funcModalsHandler(event)"
                         th:data-url="'/'+${pathServer}+'/e/'+${entry.get('id')}"
                         data-toggle="modal" data-target="#edit1">
-                    Edit Product
+                    Edit
                 </button>
             </td>
             <td th:if="${AKSES == 'Admin' and USR_NAME != entry.get('username')} " >
