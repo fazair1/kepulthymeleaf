@@ -16,7 +16,7 @@
 
 	<div class ="form-group">
 		<label> Status Transaksi </label>
-		<select name = "namaStatus" th:field = "*{namaStatus}" class = "form-control">
+		<select name = "namaStatus" th:field = "*{namaStatus}" class = "form-control" th:attr="readonly=${AKSES != 'Admin'}">>
 			<option value="Waiting for Approval">Waiting for Approval</option>
 			<option value="Approved">Approved</option>
 
@@ -25,13 +25,17 @@
 			<li th:each="err : ${#fields.errors('namaStatus')}" th:text="${err}" class="error" />
 		</ul>
 	</div>
-	<div class ="form-group">
-		<label> Product List </label>
-		<select id="ltProduct" name="ltProduct" th:field="*{ltProduct}" size="10" multiple="multiple">
-			<option th:each="productList: ${listMapDataProduct}" th:value="${productList.id}" th:text="${productList.id + '. ' + productList.nama + ' - ' + productList.deskripsi}"></option>
-		</select>
+	<h3>Product List</h3>
+	<div class="grid-container">
+		<div class="grid-item" th:each="productList: ${listMapDataProduct}">
+			<input type="checkbox"
+				   th:value="${productList.id}"
+				   name="ltProduct"
+				   th:checked="${productSelected.contains(productList.id)}"
+			>
+			<label th:text="${productList.id + '. ' + productList.nama + ' - ' + productList.deskripsi}"/>
+		</div>
 	</div>
-
 
 	<div class = "modal-footer">
 		<button type="submit" class = "btn btn-primary">

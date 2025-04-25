@@ -18,7 +18,7 @@
         </button>
 
         <!-- Export PDF -->
-        <a th:href="@{'/'+${pathServer}+'/pdf?column='+${columnName}+'&value='+${value}}">
+        <a th:if="${pathServer == 'product' or pathServer == 'transaction'}" th:href="@{'/'+${pathServer}+'/pdf?column='+${columnName}+'&value='+${value}}">
             <button class="btn btn-outline-danger me-2" type="button">Export PDF</button>
         </a>
     </div>
