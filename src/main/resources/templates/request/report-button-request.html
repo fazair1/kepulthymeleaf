@@ -4,7 +4,7 @@
 <body>
 <div th:fragment="btn-functional" >
     <br><br>
-    <div class="my-3" th:if="${AKSES == 'Admin'}">
+    <div class="my-3" >
         <!-- Tombol Add -->
         <button type="button"
                 th:data-title="'ADD'"
@@ -20,7 +20,7 @@
 
         <!-- Export PDF -->
         <a th:if="${pathServer == 'product' or pathServer == 'transaction'}" th:href="@{'/'+${pathServer}+'/pdf?column='+${columnName}+'&value='+${value}}">
-            <button class="btn btn-outline-danger me-2" type="button">Export PDF</button>
+            <button class="btn btn-outline-danger me-2" type="button" th:if="${AKSES == 'Admin'}" >Export PDF</button>
         </a>
     </div>
 </div>

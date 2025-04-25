@@ -1,29 +1,34 @@
-@ -0,0 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="main-table" class="table-responsive">
     <table class="table table-bordered text-center">
         <thead class="table-light">
         <tr>
-            <th th:each="map:${listKolom}">
+            <!-- Kolom data -->
+            <th th:each="map : ${listKolom}">
                 <a th:href="@{'/'+${pathServer}+'/'+(${#strings.equals(sort,'asc')} ? 'desc' : 'asc')+'/'+${map.key}+'/'+${currentPage}+'?column='+${columnName}+'&value='+${value}+'&size='+${sizePerPage}}"
                    class="text-dark text-decoration-none">
                     [[${map.value}]]
                 </a>
             </th>
-            <th colspan="2">Action</th>
+
+            <!-- Kolom action jika Admin -->
+            <th th:if="${AKSES == 'Admin'}">Action</th>
         </tr>
         </thead>
+
         <tbody>
-        <tr th:each="entry:${listContent}">
-            <td th:each="f:${listHelper}">
+        <tr th:each="entry : ${listContent}">
+            <!-- Isi data -->
+            <td th:each="f : ${listHelper}">
                 <div th:if="${f != 'productCategory'}" th:text="${entry.get(f)}"></div>
                 <div th:if="${f == 'productCategory'}">
                     <p th:text="${entry.get(f).get('nama')}"></p>
                 </div>
-
             </td>
-            <td>
+
+            <!-- Tombol Action jika Admin -->
+            <td th:if="${AKSES == 'Admin'}">
                 <button class="btn btn-primary"
                         th:data-title="'Edit'"
                         th:data-server="'#server-results-edit'"
@@ -32,8 +37,6 @@
                         data-toggle="modal" data-target="#edit1">
                     Edit Product
                 </button>
-            </td>
-            <td>
                 <button class="btn btn-danger"
                         onclick="getRequestHandler(event)"
                         th:data-title="${pathServer}"
@@ -45,7 +48,4 @@
         </tbody>
     </table>
 </div>
-
-
-
 </html>

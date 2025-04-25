@@ -43,7 +43,7 @@
                     Edit Product
                 </button>
             </td>
-            <td>
+            <td th:if="${AKSES == 'Admin' and USR_NAME != entry.get('username')} " >
                 <button class="btn btn-danger"
                         onclick="getRequestHandler(event)"
                         th:data-title="${pathServer}"
@@ -51,6 +51,7 @@
                     Delete
                 </button>
             </td>
+            <td th:if="${AKSES == 'Admin' and USR_NAME == entry.get('username')} " ></td>
         </tr>
         </tbody>
     </table>
