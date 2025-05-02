@@ -242,12 +242,12 @@ public class TransactionController {
         ResponseEntity<Object> responseFind = null;
         ValTransactionDTO valTransactionDTO = new ValTransactionDTO();
 
-        if (selectTransactionDTO.getNamaDivisi().equals("Approved")) {
-            String jwt = GlobalFunction.tokenCheck(model, webRequest);
-            if(jwt.equals(ConstantPage.LOGIN_PAGE)){
-                return jwt;
-            }
-            try{
+        try {
+            if (selectTransactionDTO.getNamaDivisi().equals("Approved")) {
+                String jwt = GlobalFunction.tokenCheck(model, webRequest);
+                if(jwt.equals(ConstantPage.LOGIN_PAGE)){
+                    return jwt;
+                }
                 responseFind = transactionService.findById(jwt,id);
 
                 Map<String,Object> mapFind = (Map<String, Object>) responseFind.getBody();
@@ -266,13 +266,10 @@ public class TransactionController {
 
                 valTransactionDTO = convertToValTransactionDTO(selectTransactionDTO);
 
-            }catch (Exception e){
-
             }
-        }
-        else {
-            valTransactionDTO = convertToValTransactionDTO(selectTransactionDTO);
 
+        } catch (Exception e) {
+            valTransactionDTO = convertToValTransactionDTO(selectTransactionDTO);
         }
         selectTransactionDTO.setId(id);
         if(bindingResult.hasErrors()){
@@ -291,7 +288,7 @@ public class TransactionController {
             model.addAttribute("data",valTransactionDTO);
             return ConstantPage.TRANSACTION_EDIT_PAGE;
         }
-        return "redirect:/transaction";
+        return ConstantPage.SUCCESS_MESSAGE;
     }
 
 
