@@ -52,6 +52,17 @@
                         data-toggle="modal" data-target="#edit1">
                     Edit
                 </button>
+                <form class="approve" th:action="@{/transaction/e/{id} (id=${entry.id})}"
+                      th:object = "${data}" method="POST">
+                    <input type="hidden" value="50c9a8c2b1cb45799d8f0db5f8449c65" /><!-- id form -->
+                    <input type="hidden" name="namaDivisi" th:value="Approved"/><!-- id form -->
+                    <input type="hidden" name = "namaStatus" th:value="Approved"/><!-- id form -->
+
+                    <button type="submit" th:if="${entry.get('namaStatus') == 'Waiting for Approval'}" class="btn btn-primary">
+                        Approve
+                    </button>
+                </form>
+
             </td>
             <td th:if="${AKSES == 'Admin'}">
                 <button  class="btn btn-danger"

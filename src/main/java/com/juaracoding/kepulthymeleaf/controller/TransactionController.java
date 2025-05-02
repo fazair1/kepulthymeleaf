@@ -238,14 +238,48 @@ public class TransactionController {
             @PathVariable(value = "id") Long id,
             WebRequest webRequest){
 
+        ResponseEntity<Object> response = null;
+        ResponseEntity<Object> responseFind = null;
+        ValTransactionDTO valTransactionDTO = new ValTransactionDTO();
+
+        if (selectTransactionDTO.getNamaDivisi().equals("Approved")) {
+            String jwt = GlobalFunction.tokenCheck(model, webRequest);
+            if(jwt.equals(ConstantPage.LOGIN_PAGE)){
+                return jwt;
+            }
+            try{
+                responseFind = transactionService.findById(jwt,id);
+
+                Map<String,Object> mapFind = (Map<String, Object>) responseFind.getBody();
+                Map<String,Object> mapFindData = (Map<String, Object>) mapFind.get("data");
+                List<Map<String,Object>> listFindProduct = (List<Map<String, Object>>) mapFindData.get("ltProduct");
+
+                List<String> listProduct = new ArrayList<>();
+                String temp = "";
+
+                for (Map<String,Object> product: listFindProduct ) {
+                    temp = product.get("id").toString();
+                    listProduct.add(temp);
+                }
+
+                selectTransactionDTO.setLtProduct(listProduct);
+
+                valTransactionDTO = convertToValTransactionDTO(selectTransactionDTO);
+
+            }catch (Exception e){
+
+            }
+        }
+        else {
+            valTransactionDTO = convertToValTransactionDTO(selectTransactionDTO);
+
+        }
         selectTransactionDTO.setId(id);
         if(bindingResult.hasErrors()){
             model.addAttribute("data",selectTransactionDTO);
             return ConstantPage.TRANSACTION_EDIT_PAGE;
         }
 
-        ValTransactionDTO valTransactionDTO = convertToValTransactionDTO(selectTransactionDTO);
-        ResponseEntity<Object> response = null;
         String jwt = GlobalFunction.tokenCheck(model, webRequest);
         if(jwt.equals(ConstantPage.LOGIN_PAGE)){
             return jwt;
@@ -257,7 +291,7 @@ public class TransactionController {
             model.addAttribute("data",valTransactionDTO);
             return ConstantPage.TRANSACTION_EDIT_PAGE;
         }
-        return ConstantPage.SUCCESS_MESSAGE;
+        return "redirect:/transaction";
     }
 
 
